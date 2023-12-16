@@ -15,27 +15,38 @@ export const noteRouter = createTRPCRouter({
             };
         }),
 
-    create: protectedProcedure
-        .input(
-            z.object({ title: z.string().min(1), content: z.string().min(1) }),
-        )
-        .mutation(async ({ ctx, input }) => {
-            // simulate a slow db call
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+    // create: protectedProcedure
+    //     .input(
+    //         z.object({ title: z.string().min(1), content: z.string().min(1) }),
+    //     )
+    //     .mutation(async ({ ctx, input }) => {
+    //         // simulate a slow db call
+    //         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-            return ctx.db.note.create({
-                data: {
-                    title: input.title,
-                    content: input.content,
-                    createdBy: { connect: { id: ctx.session.user.id } },
-                },
-            });
-        }),
+    //         return ctx.db.note.create({
+    //             data: {
+    //                 title: input.title,
+    //                 content: input.content,
+    //                 createdBy: { connect: { id: ctx.session.user.id } },
+    //             },
+    //         });
+    //     }),
 
-    getLatest: protectedProcedure.query(({ ctx }) => {
-        return ctx.db.note.findFirst({
-            orderBy: { createdAt: "desc" },
-            where: { createdBy: { id: ctx.session.user.id } },
+    // getLatest: protectedProcedure.query(({ ctx }) => {
+    //     console.log(ctx.session.user);
+
+    //     return ctx.db.note.findFirst({
+    //         orderBy: { createdAt: "desc" },
+    //         where: { createdBy: { id: ctx.session.user.id } },
+    //     });
+    // }),
+
+    getFolders: protectedProcedure.query(({ ctx }) => {
+        const userId = ctx.session.user.id;
+
+        return ctx.db.folder.findMany({
+            where: { createdBy: { id: userId } },
+            include: { notes: true },
         });
     }),
 

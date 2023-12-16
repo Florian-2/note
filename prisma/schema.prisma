@@ -8,16 +8,43 @@ datasource db {
 }
 
 model Note {
-    id          String      @id @default(cuid())
-    title       String
-    content     String
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+	id          String      @id @default(cuid())
+	title       String
+	content     String
+	createdAt   DateTime   @default(now())
+	updatedAt   DateTime   @updatedAt
 
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
+	// Modification de la relation createdBy
+	// createdBy   User        @relation("CreatedBy", fields: [createdById], references: [id])
+	// createdById String
 
-    @@index([title])
+	folder      Folder    @relation(fields: [folderId], references: [id]) // Une note appartient à UN dossier
+	folderId    String    // Référence au dossier
+
+	@@index([title])
+}
+
+model Folder {
+	id          String      @id @default(cuid())
+	name        String      // Nom du dossier
+	createdAt   DateTime    @default(now())
+	updatedAt   DateTime    @updatedAt
+
+	createdBy   User        @relation(fields: [createdById], references: [id]) // Un dossier appartient à un utilisateur
+  	createdById String      // Référence à l'utilisateur propriétaire du dossier
+
+	notes       Note[]      // Un dossier peut contenir plusieurs notes
+}
+
+model User {
+	id            String    @id @default(cuid())
+	name          String?
+	email         String?   @unique
+	emailVerified DateTime?
+	image         String?
+	accounts      Account[]
+	sessions      Session[]
+	folders       Folder[]  // Un utilisateur peut avoir plusieurs dossiers
 }
 
 model Account {
@@ -45,17 +72,6 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    notes         Note[]
 }
 
 model VerificationToken {
