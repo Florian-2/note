@@ -23,7 +23,7 @@ export default async function Home() {
 
             <div className="mt-7 flex gap-20 md:gap-40">
                 <Image
-                    src={"/undraw_add_notes.svg"}
+                    src={"/undraw_add_notes_black.svg"}
                     alt="Icon"
                     width={250}
                     height={250}

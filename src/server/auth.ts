@@ -41,13 +41,3 @@ export const getAuthSession = (): Promise<Session | null> =>
     new Promise((res) =>
         setTimeout(() => res(getServerSession(authOptions)), 0),
     );
-
-// export async function getRequiredAuthSession() {
-//     const session = await getAuthSession();
-
-//     if (!session?.user) {
-//         throw new Error("Session utilisateur introuvable !");
-//     }
-
-//     return session;
-// }
