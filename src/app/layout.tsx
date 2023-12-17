@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import { ThemeProvider } from "@/components/theme";
+import { AuthProvider } from "@/components/user/auth-provider";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -26,13 +27,15 @@ export default function RootLayout({
         <html lang="fr" suppressHydrationWarning>
             <body className={`font-sans ${inter.variable} flex flex-col`}>
                 <TRPCReactProvider cookies={cookies().toString()}>
-                    <ThemeProvider
-                        attribute="class"
-                        defaultTheme="system"
-                        enableSystem
-                    >
-                        {children}
-                    </ThemeProvider>
+                    <AuthProvider>
+                        <ThemeProvider
+                            attribute="class"
+                            defaultTheme="system"
+                            enableSystem
+                        >
+                            {children}
+                        </ThemeProvider>
+                    </AuthProvider>
                 </TRPCReactProvider>
             </body>
         </html>

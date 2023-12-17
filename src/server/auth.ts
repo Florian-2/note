@@ -1,5 +1,5 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { getServerSession, type NextAuthOptions } from "next-auth";
+import { getServerSession, Session, type NextAuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import GithubProvider from "next-auth/providers/github";
 
@@ -32,16 +32,22 @@ export const authOptions: NextAuthOptions = {
             clientSecret: env.GITHUB_CLIENT_SECRET,
         }),
     ],
+    pages: {
+        signIn: "/login",
+    },
 };
 
-export const getAuthSession = () => getServerSession(authOptions);
+export const getAuthSession = (): Promise<Session | null> =>
+    new Promise((res) =>
+        setTimeout(() => res(getServerSession(authOptions)), 0),
+    );
 
-export async function getRequiredAuthSession() {
-    const session = await getAuthSession();
+// export async function getRequiredAuthSession() {
+//     const session = await getAuthSession();
 
-    if (!session?.user) {
-        throw new Error("Session not found !");
-    }
+//     if (!session?.user) {
+//         throw new Error("Session utilisateur introuvable !");
+//     }
 
-    return session;
-}
+//     return session;
+// }

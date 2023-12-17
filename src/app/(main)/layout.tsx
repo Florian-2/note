@@ -5,5 +5,10 @@ type Props = {
 };
 
 export default function MainLayout({ children }: Props) {
-    return <main>111{children}</main>;
+    return (
+        <>
+            <aside>Aside</aside>
+            <main>{children}</main>
+        </>
+    );
 }

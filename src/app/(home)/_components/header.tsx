@@ -1,5 +1,5 @@
 import { ThemeSwitcher } from "@/components/theme";
-
+import { Account } from "@/components/user/account";
 import Link from "next/link";
 
 export function Header() {
@@ -9,7 +9,11 @@ export function Header() {
                 Note+
             </Link>
 
-            <ThemeSwitcher />
+            <div className="flex items-center gap-4">
+                <Account />
+
+                <ThemeSwitcher />
+            </div>
         </header>
     );
 }
