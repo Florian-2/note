@@ -1,2 +1,2 @@
-export * from "./theme-switcher";
+export * from "./theme-toggle";
 export * from "./theme-provider";
