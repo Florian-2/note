@@ -1,7 +1,7 @@
 import { ScrollText } from "lucide-react";
 import { MobileSidebar } from "./nav/mobile-sidebar";
 import { ThemeToggle } from "@/components/theme";
-import { Account } from "@/components/user/account";
+import { PopoverAccount } from "@/components/user/popover-account";
 
 export default function Header() {
     return (
@@ -17,7 +17,7 @@ export default function Header() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <Account />
+                    <PopoverAccount />
                     <ThemeToggle />
                 </div>
             </nav>

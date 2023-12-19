@@ -8,8 +8,8 @@ datasource db {
 }
 
 model Note {
-	id          String      @id @default(cuid())
-	title       String
+	id          String     @id @default(cuid())
+	name        String     @unique
 	content     String
 	createdAt   DateTime   @default(now())
 	updatedAt   DateTime   @updatedAt
@@ -21,12 +21,13 @@ model Note {
 	folder      Folder    @relation(fields: [folderId], references: [id]) // Une note appartient à UN dossier
 	folderId    String    // Référence au dossier
 
-	@@index([title])
+	@@index([name])
 }
 
 model Folder {
 	id          String      @id @default(cuid())
-	name        String      // Nom du dossier
+	name        String      @unique
+    color       String
 	createdAt   DateTime    @default(now())
 	updatedAt   DateTime    @updatedAt
 
@@ -34,6 +35,8 @@ model Folder {
   	createdById String      // Référence à l'utilisateur propriétaire du dossier
 
 	notes       Note[]      // Un dossier peut contenir plusieurs notes
+
+	@@index([name])
 }
 
 model User {

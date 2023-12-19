@@ -1,5 +1,6 @@
 import { ThemeToggle } from "@/components/theme";
-import { Account } from "@/components/user/account";
+import { PopoverAccount } from "@/components/user/popover-account";
+
 import { ScrollText } from "lucide-react";
 
 export function Header() {
@@ -11,7 +12,8 @@ export function Header() {
             </div>
 
             <div className="flex items-center gap-3">
-                <Account />
+                <PopoverAccount />
+
                 <ThemeToggle />
             </div>
         </header>

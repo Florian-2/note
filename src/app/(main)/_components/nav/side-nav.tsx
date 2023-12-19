@@ -40,20 +40,21 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
                     }}
                     className={cn(
                         buttonVariants({ variant: "ghost" }),
-                        "group relative flex h-12 justify-start",
-                        path === item.href &&
-                            "bg-muted font-bold hover:bg-muted",
+                        "group relative flex h-12 justify-start font-normal",
+                        path === item.href && "bg-muted hover:bg-muted",
                     )}
                 >
-                    <item.icon className={"h-5 w-5"} />
-                    <span
-                        className={cn(
-                            "absolute left-12 text-base duration-200",
-                            !isOpen && className,
-                        )}
-                    >
-                        {item.name}
-                    </span>
+                    <div className="flex items-center gap-4">
+                        <item.icon className={"h-5 w-5"} />
+                        <span
+                            className={cn(
+                                "text-base duration-200",
+                                !isOpen && className,
+                            )}
+                        >
+                            {item.name}
+                        </span>
+                    </div>
                 </Link>
             ))}
         </nav>

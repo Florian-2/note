@@ -22,6 +22,14 @@ module.exports = {
                 ring: "hsl(var(--ring))",
                 background: "hsl(var(--background))",
                 foreground: "hsl(var(--foreground))",
+                gray: "#60696B",
+                pink: "#D177C0",
+                red: "#CF4242",
+                orange: "#EF7F4B",
+                yellow: "#FFC531",
+                green: "#30C584",
+                blue: "#5D87FF",
+                purple: "#5249A9",
                 primary: {
                     DEFAULT: "hsl(var(--primary))",
                     foreground: "hsl(var(--primary-foreground))",
@@ -71,6 +79,9 @@ module.exports = {
                     from: { height: "var(--radix-accordion-content-height)" },
                     to: { height: 0 },
                 },
+            },
+            right: {
+                "3.5": "14px",
             },
             animation: {
                 "accordion-down": "accordion-down 0.2s ease-out",
