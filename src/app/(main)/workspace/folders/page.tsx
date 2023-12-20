@@ -1,17 +1,12 @@
-import { FoldersList } from "@/components/folder/folders-list";
 import { api } from "@/trpc/server";
-import { CreateFolder } from "./_components/create-folder";
+import { FoldersList } from "./_components/folders-list";
 
 export default async function FoldersPage() {
     const folders = await api.folders.getAllFolders.query();
 
     return (
-        <section>
-            <div className="flex gap-4">
-                <CreateFolder />
-
-                <FoldersList folders={folders} />
-            </div>
+        <section className="flex h-full items-center justify-center">
+            <FoldersList folders={folders} />
         </section>
     );
 }

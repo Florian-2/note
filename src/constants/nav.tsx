@@ -1,10 +1,15 @@
-import { FolderClosedIcon, Star, Trash } from "lucide-react";
+import { File, FolderOpenIcon, Star, Trash } from "lucide-react";
 
 export const navItems = [
     {
         name: "Mes dossiers",
-        icon: FolderClosedIcon,
+        icon: FolderOpenIcon,
         href: "/workspace/folders",
+    },
+    {
+        name: "Mes notes",
+        icon: File,
+        href: "/workspace/notes",
     },
     {
         name: "Favories",

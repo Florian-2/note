@@ -8,22 +8,21 @@ type Props = {
 
 export function CreateFolderButton({ onClick }: Props) {
     return (
-        <TooltipProvider>
-            <Tooltip>
-                <TooltipTrigger asChild>
-                    <Button
-                        variant={"outline"}
-                        className="h-36 w-36 border-2 border-dashed dark:border-foreground/60"
-                        onClick={onClick}
-                    >
-                        <Plus />
-                    </Button>
-                </TooltipTrigger>
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <Button
+                    variant={"outline"}
+                    className="h-full w-full border-2 border-dashed dark:border-foreground/60"
+                    onClick={onClick}
+                >
+                    <Plus />
+                    <span className="sr-only">Créer un dossier</span>
+                </Button>
+            </TooltipTrigger>
 
-                <TooltipContent align="center" side="bottom">
-                    <p>Créer un dossier</p>
-                </TooltipContent>
-            </Tooltip>
-        </TooltipProvider>
+            <TooltipContent align="center" side="bottom">
+                <p>Créer un dossier</p>
+            </TooltipContent>
+        </Tooltip>
     );
 }

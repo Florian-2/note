@@ -1,5 +1,6 @@
 import type { Folder } from "@prisma/client";
-import { FolderCard } from "./ui/folder-card";
+import { CreateFolder } from "./create-folder";
+import { FolderCard } from "@/components/folder/ui/folder-card";
 
 type Props = {
     folders: (Folder & {
@@ -12,10 +13,12 @@ type Props = {
 
 export function FoldersList({ folders }: Props) {
     return (
-        <section className="flex flex-wrap gap-4">
+        <div className="grid grid-cols-7 justify-center gap-4">
+            <CreateFolder />
+
             {folders.map((folder) => (
                 <FolderCard key={folder.id} folder={folder} />
             ))}
-        </section>
+        </div>
     );
 }

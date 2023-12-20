@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function NotFound() {
     return (
-        <div className="flex h-full items-center justify-center">
+        <div className="flex h-full flex-col items-center justify-center gap-6">
             <Image
                 src="/undraw_not_found.svg"
                 alt="page not found"

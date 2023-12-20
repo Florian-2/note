@@ -5,11 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { Button } from "@/components/ui/button";
-import {
-    createFolderSchema,
-    DEFAULT_COLOR,
-    type CreateFolderType,
-} from "@/shared/validators/folder";
+import { createFolderSchema, type CreateFolderType } from "@/shared/validators/folder";
 import {
     Form,
     FormControl,
@@ -19,9 +15,6 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { colors } from "@/constants/colors";
-import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 
 type Props = {
@@ -53,18 +46,17 @@ export function FolderForm({ onClose }: Props) {
         resolver: zodResolver(createFolderSchema),
         defaultValues: {
             name: "",
-            color: DEFAULT_COLOR,
         },
     });
     const { formState } = form;
 
     function onSubmit(values: CreateFolderType) {
-        mutate({ name: values.name, color: values.color });
+        mutate({ name: values.name });
     }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
                 <FormField
                     control={form.control}
                     name="name"
@@ -74,42 +66,6 @@ export function FolderForm({ onClose }: Props) {
 
                             <FormControl>
                                 <Input {...field} />
-                            </FormControl>
-
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-                <FormField
-                    control={form.control}
-                    name="color"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Couleur</FormLabel>
-
-                            <FormControl>
-                                <ToggleGroup
-                                    onValueChange={field.onChange}
-                                    value={field.value}
-                                    type="single"
-                                    variant="outline"
-                                    className="flex flex-wrap justify-between"
-                                >
-                                    {colors.map((color) => (
-                                        <FormItem key={color.name}>
-                                            <FormControl>
-                                                <ToggleGroupItem
-                                                    value={color.name}
-                                                    className={cn(
-                                                        "h-7 w-7 rounded-full border-none",
-                                                        color.class,
-                                                    )}
-                                                ></ToggleGroupItem>
-                                            </FormControl>
-                                        </FormItem>
-                                    ))}
-                                </ToggleGroup>
                             </FormControl>
 
                             <FormMessage />
