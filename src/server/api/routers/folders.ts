@@ -6,17 +6,17 @@ import {
     deleteFolderSchema,
     searchFolderSchema,
 } from "@/shared/validators/folder";
+import { z } from "zod";
 
 export const folderRouter = createTRPCRouter({
     create: protectedProcedure.input(createFolderSchema).mutation(async ({ ctx, input }) => {
-        // await new Promise((resolve) => setTimeout(resolve, 1000));
-
         try {
             return await ctx.db.folder.create({
                 data: {
                     name: input.name,
                     createdBy: { connect: { id: ctx.session.user.id } },
                 },
+                include: { _count: true },
             });
         } catch (error) {
             if (error instanceof PrismaClientKnownRequestError) {

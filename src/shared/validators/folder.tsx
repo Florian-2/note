@@ -17,5 +17,5 @@ export const searchFolderSchema = z.object({
 });
 
 export const deleteFolderSchema = z.object({
-    folderId: z.string().min(1, { message: "L'identifiant du dossier est requis" }),
+    folderId: z.string().min(20, { message: "L'identifiant du dossier est requis" }),
 });

@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
@@ -22,7 +21,7 @@ type Props = {
 };
 
 export function FolderForm({ onClose }: Props) {
-    const router = useRouter();
+    const utils = api.useUtils();
     const { mutate, isLoading } = api.folders.create.useMutation({
         onError(error) {
             if (error.data?.code === "CONFLICT") {
@@ -35,8 +34,11 @@ export function FolderForm({ onClose }: Props) {
                 return form.setError("root", { message: "La validation du formulaire a échoué" });
             }
         },
-        onSuccess() {
-            router.refresh();
+        onSuccess(data) {
+            const newFolder = data!;
+            utils.folders.getAllFolders.setData(undefined, (oldData) =>
+                oldData ? [...oldData, newFolder] : [newFolder],
+            );
 
             onClose();
         },

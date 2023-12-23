@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import Sidebar from "./_components/nav/sidebar";
 import Header from "./_components/header";
+import { Toaster } from "@/components/ui/toaster";
 
 type Props = {
     children: ReactNode;
@@ -26,6 +27,8 @@ export default async function MainLayout({ children }: Props) {
                     {children}
                 </main>
             </div>
+
+            <Toaster />
         </>
     );
 }

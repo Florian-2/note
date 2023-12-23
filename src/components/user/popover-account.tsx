@@ -24,9 +24,7 @@ export function PopoverAccount() {
                 <div>
                     <p className="text-lg font-normal">{data?.user.name}</p>
 
-                    {data?.user.email && (
-                        <p className="text-foreground/80">{data?.user.email}</p>
-                    )}
+                    {data?.user.email && <p className="text-foreground/80">{data?.user.email}</p>}
                 </div>
 
                 <div className="space-y-2">

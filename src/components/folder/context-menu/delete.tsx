@@ -3,17 +3,27 @@
 import { ContextMenuItem } from "@/components/ui/context-menu";
 import { api } from "@/trpc/react";
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
     id: string;
 };
 
 export function DeleteFolderButton({ id }: Props) {
-    const router = useRouter();
+    const utils = api.useUtils();
+    const { toast } = useToast();
+
     const { mutate, isLoading } = api.folders.deleteFolder.useMutation({
-        onSuccess() {
-            router.refresh();
+        onSuccess(deletedFolder) {
+            utils.folders.getAllFolders.setData(undefined, (oldData) => {
+                return oldData?.filter((folder) => folder.id !== deletedFolder.id);
+            });
+        },
+        onError() {
+            toast({
+                variant: "destructive",
+                description: "La suppression du dossier a échoué !",
+            });
         },
     });
 
@@ -24,7 +34,7 @@ export function DeleteFolderButton({ id }: Props) {
 
     return (
         <ContextMenuItem
-            className="justify-between focus:bg-destructive/10 focus:text-destructive"
+            className="justify-between bg-blend-saturation focus:bg-destructive/10 focus:text-destructive dark:hover:bg-destructive/40 dark:focus:text-white"
             disabled={isLoading}
             onSelect={handleSelect}
         >
