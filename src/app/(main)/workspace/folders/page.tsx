@@ -1,9 +1,14 @@
+import { api } from "@/trpc/server";
+
 import { FoldersList } from "./_components/folders-list";
+import { FoldersProvider } from "@/context/folders";
 
 export default async function FoldersPage() {
+    const folders = await api.folders.getAllFolders.query();
+
     return (
-        <section className="h-full">
+        <FoldersProvider folders={folders}>
             <FoldersList />
-        </section>
+        </FoldersProvider>
     );
 }

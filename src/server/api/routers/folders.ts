@@ -6,7 +6,6 @@ import {
     deleteFolderSchema,
     searchFolderSchema,
 } from "@/shared/validators/folder";
-import { z } from "zod";
 
 export const folderRouter = createTRPCRouter({
     create: protectedProcedure.input(createFolderSchema).mutation(async ({ ctx, input }) => {

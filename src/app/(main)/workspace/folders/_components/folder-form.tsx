@@ -15,13 +15,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
+import { useFolders } from "@/context/folders";
 
 type Props = {
     onClose: () => void;
 };
 
 export function FolderForm({ onClose }: Props) {
-    const utils = api.useUtils();
+    const { addFolder } = useFolders();
     const { mutate, isLoading } = api.folders.create.useMutation({
         onError(error) {
             if (error.data?.code === "CONFLICT") {
@@ -35,10 +36,7 @@ export function FolderForm({ onClose }: Props) {
             }
         },
         onSuccess(data) {
-            const newFolder = data!;
-            utils.folders.getAllFolders.setData(undefined, (oldData) =>
-                oldData ? [...oldData, newFolder] : [newFolder],
-            );
+            if (data) addFolder(data);
 
             onClose();
         },
