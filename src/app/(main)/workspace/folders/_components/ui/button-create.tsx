@@ -12,7 +12,7 @@ export function CreateFolderButton({ onClick }: Props) {
             <TooltipTrigger asChild>
                 <Button
                     variant={"outline"}
-                    className="h-full w-full border-2 border-dashed dark:border-foreground/60"
+                    className="w-full border-2 border-dashed dark:border-foreground/60"
                     onClick={onClick}
                 >
                     <Plus />

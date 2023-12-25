@@ -46,13 +46,15 @@ export const folderRouter = createTRPCRouter({
         });
     }),
 
-    getAllFolders: protectedProcedure.query(({ ctx }) => {
+    getAllFolders: protectedProcedure.query(async ({ ctx }) => {
         const userId = ctx.session.user.id;
 
         return ctx.db.folder.findMany({
             where: { createdBy: { id: userId } },
             include: { _count: true },
-            orderBy: { name: "asc" },
+            orderBy: {
+                createdAt: "desc",
+            },
         });
     }),
 });

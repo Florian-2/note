@@ -36,6 +36,7 @@ export function FolderForm({ onClose }: Props) {
             }
         },
         onSuccess(data) {
+            console.log(data);
             if (data) addFolder(data);
 
             onClose();

@@ -18,15 +18,14 @@ export function FolderCard({ folder }: Props) {
 
     return (
         <ContextMenu>
-            <ContextMenuTrigger className="flex-grow rounded-md px-7 py-4 transition-colors duration-200 hover:bg-muted">
-                <Link href={`folders/${folder.id}`}>
-                    <div className="flex flex-col items-center gap-1">
+            <ContextMenuTrigger>
+                <Link
+                    href={`folders/${folder.id}`}
+                    className="flex flex-grow items-center justify-center rounded-md p-4 px-6 transition-colors duration-200 hover:bg-muted"
+                >
+                    <div className="flex w-full flex-col items-center gap-1">
                         <div className="relative">
-                            {countNotes ? (
-                                <IconFolder width={90} />
-                            ) : (
-                                <IconFolderEmpty width={90} />
-                            )}
+                            {countNotes ? <IconFolder /> : <IconFolderEmpty />}
 
                             {countNotes >= 1 && (
                                 <Badge className="absolute -right-3.5 top-0">{countNotes}</Badge>

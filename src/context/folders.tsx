@@ -1,10 +1,18 @@
 "use client";
 
 import type { Folder } from "@/shared/types/folders";
-import { type ReactNode, createContext, useState, useContext } from "react";
+import {
+    type ReactNode,
+    createContext,
+    useState,
+    useContext,
+    type Dispatch,
+    type SetStateAction,
+} from "react";
 
 type FoldersContext = {
     folders: Folder[];
+    setFoldersList: Dispatch<SetStateAction<Folder[]>>;
     deleteFolder: (id: string) => void;
     addFolder: (newFolder: Folder) => void;
     // sortBy: () => void
@@ -26,11 +34,16 @@ export function FoldersProvider({ children, folders }: Props) {
     }
 
     function addFolder(newFolder: Folder) {
-        setFolders([...folders, newFolder]);
+        const newFolderList = foldersList.slice();
+        newFolderList.push(newFolder);
+
+        setFolders(newFolderList);
     }
 
     return (
-        <FoldersContext.Provider value={{ folders: foldersList, deleteFolder, addFolder }}>
+        <FoldersContext.Provider
+            value={{ folders: foldersList, setFoldersList: setFolders, deleteFolder, addFolder }}
+        >
             {children}
         </FoldersContext.Provider>
     );

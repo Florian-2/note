@@ -1,11 +1,13 @@
-type Props = {
-    width?: number | string;
-    height?: number | string;
-};
-
-export function IconFolderEmpty({ width = 100 }: Props) {
+export function IconFolderEmpty() {
     return (
-        <svg width={width} viewBox="0 0 46 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            width={`100%`}
+            height={`100%`}
+            style={{ minWidth: "60px", maxWidth: "100px" }}
+            viewBox="0 0 46 36"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <g clipPath="url(#clip0_12_33)">
                 <path
                     d="M43.5 36H2.5C1.119 36 0 34.881 0 33.5V2.5C0 1.119 1.119 0 2.5 0H14.097C15.616 0 17.052 0.69 18.001 1.877L20.5 5H43.5C44.881 5 46 6.119 46 7.5V33.5C46 34.881 44.881 36 43.5 36Z"
