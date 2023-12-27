@@ -1,4 +1,4 @@
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
@@ -12,7 +12,7 @@ export function CreateFolderButton({ onClick }: Props) {
             <TooltipTrigger asChild>
                 <Button
                     variant={"outline"}
-                    className="w-full border-2 border-dashed dark:border-foreground/60"
+                    className="h-full w-full border-2 border-dashed dark:border-foreground/60"
                     onClick={onClick}
                 >
                     <Plus />

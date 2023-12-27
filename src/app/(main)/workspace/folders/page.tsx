@@ -6,10 +6,8 @@ export default async function FoldersPage() {
     const folders = await api.folders.getAllFolders.query();
 
     return (
-        <>
-            <FoldersProvider folders={folders}>
-                <FoldersList />
-            </FoldersProvider>
-        </>
+        <FoldersProvider folders={folders}>
+            <FoldersList />
+        </FoldersProvider>
     );
 }

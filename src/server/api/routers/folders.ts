@@ -6,6 +6,7 @@ import {
     deleteFolderSchema,
     searchFolderSchema,
 } from "@/shared/validators/folder";
+import { z } from "zod";
 
 export const folderRouter = createTRPCRouter({
     create: protectedProcedure.input(createFolderSchema).mutation(async ({ ctx, input }) => {
@@ -34,7 +35,7 @@ export const folderRouter = createTRPCRouter({
         return ctx.db.folder.findMany({
             where: { createdBy: { id: userId, name: input.query } },
             include: { _count: true },
-            orderBy: { createdAt: "asc" },
+            orderBy: { name: "asc" },
         });
     }),
 
@@ -46,15 +47,13 @@ export const folderRouter = createTRPCRouter({
         });
     }),
 
-    getAllFolders: protectedProcedure.query(async ({ ctx }) => {
+    getAllFolders: protectedProcedure.query(({ ctx }) => {
         const userId = ctx.session.user.id;
 
         return ctx.db.folder.findMany({
             where: { createdBy: { id: userId } },
             include: { _count: true },
-            orderBy: {
-                createdAt: "desc",
-            },
+            orderBy: { name: "asc" },
         });
     }),
 });

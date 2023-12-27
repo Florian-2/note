@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { motion } from "framer-motion";
 import type { Folder } from "@prisma/client";
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { IconFolder, IconFolderEmpty } from "@/components/folder/icons";
 import { Badge } from "@/components/ui/badge";
 import { DeleteFolderButton, CopyFolderNameButton } from "../context-menu";
+import { forwardRef } from "react";
 
 type Props = {
     folder: Folder & {
@@ -13,12 +15,12 @@ type Props = {
     };
 };
 
-export function FolderCard({ folder }: Props) {
+const component = forwardRef<HTMLElement, Props>(({ folder }, ref) => {
     const countNotes = folder._count.notes;
 
     return (
         <ContextMenu>
-            <ContextMenuTrigger>
+            <ContextMenuTrigger ref={ref}>
                 <Link
                     href={`folders/${folder.id}`}
                     className="flex flex-grow items-center justify-center rounded-md p-4 px-6 transition-colors duration-200 hover:bg-muted"
@@ -43,4 +45,6 @@ export function FolderCard({ folder }: Props) {
             </ContextMenuContent>
         </ContextMenu>
     );
-}
+});
+
+export const FolderCard = motion(component);

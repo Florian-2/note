@@ -48,10 +48,7 @@ export default function Sidebar({ className }: SidebarProps) {
                     <Separator />
                     <Button
                         onClick={handleToggle}
-                        className={cn(
-                            "h-10 w-full bg-foreground",
-                            isOpen && "rotate-180",
-                        )}
+                        className={cn("h-10 w-full bg-foreground", isOpen && "rotate-180")}
                     >
                         <ChevronRight className="h-4 w-4" />
                     </Button>

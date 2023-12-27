@@ -5,40 +5,21 @@ import { useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { Button } from "@/components/ui/button";
 import { createFolderSchema, type CreateFolderType } from "@/shared/validators/folder";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
+import { FolderSearch, Loader2 } from "lucide-react";
 import { useFolders } from "@/context/folders";
 
-type Props = {
-    onClose: () => void;
-};
-
-export function FolderForm({ onClose }: Props) {
-    const { addFolder } = useFolders();
+export function SearchFolder() {
+    // const { addFolder } = useFolders();
     const { mutate, isLoading } = api.folders.create.useMutation({
         onError(error) {
-            if (error.data?.code === "CONFLICT") {
-                return form.setError("name", {
-                    message: "Ce nom de dossier est déjà utilisé",
-                });
-            }
-
             if (error.data?.zodError) {
                 return form.setError("root", { message: "La validation du formulaire a échoué" });
             }
         },
         onSuccess(data) {
-            if (data) addFolder(data);
-
-            onClose();
+            console.log(data);
         },
     });
 
@@ -48,7 +29,6 @@ export function FolderForm({ onClose }: Props) {
             name: "",
         },
     });
-    const { formState } = form;
 
     function onSubmit(values: CreateFolderType) {
         mutate({ name: values.name });
@@ -62,10 +42,8 @@ export function FolderForm({ onClose }: Props) {
                     name="name"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Nom</FormLabel>
-
                             <FormControl>
-                                <Input {...field} />
+                                <Input {...field} placeholder="Rechercher un dossier" />
                             </FormControl>
 
                             <FormMessage />
@@ -73,11 +51,10 @@ export function FolderForm({ onClose }: Props) {
                     )}
                 />
 
-                <p className="text-sm text-destructive">{formState.errors.root?.message}</p>
-
-                <Button type="submit" disabled={isLoading} className="w-full gap-3 text-base">
+                <Button type="submit" disabled={isLoading}>
                     {isLoading && <Loader2 className="animate-spin" />}
-                    Enregistrer
+                    <FolderSearch />
+                    <span className="sr-only">Rechercher un dossier</span>
                 </Button>
             </form>
         </Form>

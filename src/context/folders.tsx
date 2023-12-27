@@ -1,21 +1,23 @@
 "use client";
 
-import type { Folder } from "@/shared/types/folders";
+import { type Folder, SortBy } from "@/shared/types/folders";
 import {
     type ReactNode,
     createContext,
     useState,
     useContext,
+    useEffect,
+    useMemo,
     type Dispatch,
     type SetStateAction,
 } from "react";
 
 type FoldersContext = {
     folders: Folder[];
-    setFoldersList: Dispatch<SetStateAction<Folder[]>>;
     deleteFolder: (id: string) => void;
     addFolder: (newFolder: Folder) => void;
-    // sortBy: () => void
+    orderBy: SortBy;
+    setOrderBy: Dispatch<SetStateAction<SortBy>>;
 };
 
 export const FoldersContext = createContext<FoldersContext | null>(null);
@@ -26,23 +28,48 @@ type Props = {
 };
 
 export function FoldersProvider({ children, folders }: Props) {
-    const [foldersList, setFolders] = useState<Folder[]>(folders);
+    const [foldersList, setFoldersList] = useState<Folder[]>(folders);
+    const [orderBy, setOrderBy] = useState(SortBy.NameAsc);
+
+    useEffect(() => {
+        console.log("useEffect");
+        setFoldersList(sortBy(foldersList));
+    }, [orderBy]);
 
     function deleteFolder(id: string) {
         const newFolderList = foldersList.filter((folder) => folder.id !== id);
-        setFolders(newFolderList);
+        setFoldersList(newFolderList);
     }
 
     function addFolder(newFolder: Folder) {
-        const newFolderList = foldersList.slice();
-        newFolderList.push(newFolder);
+        const newFolderList = [...foldersList, newFolder];
+        setFoldersList(sortBy(newFolderList));
+    }
 
-        setFolders(newFolderList);
+    function sortBy(folders: Folder[]): Folder[] {
+        const newFolderList = folders.slice();
+
+        switch (orderBy) {
+            case SortBy.NameAsc:
+                return newFolderList.sort((a, b) => a.name.localeCompare(b.name));
+
+            case SortBy.NameDesc:
+                return newFolderList.sort((a, b) => b.name.localeCompare(a.name));
+
+            case SortBy.DateAsc:
+                return newFolderList.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+
+            case SortBy.DateDesc:
+                return newFolderList.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+            default:
+                return foldersList;
+        }
     }
 
     return (
         <FoldersContext.Provider
-            value={{ folders: foldersList, setFoldersList: setFolders, deleteFolder, addFolder }}
+            value={{ folders: foldersList, deleteFolder, addFolder, orderBy, setOrderBy }}
         >
             {children}
         </FoldersContext.Provider>

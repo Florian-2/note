@@ -6,3 +6,10 @@ export type Folder = FolderPrisma & {
         notes: number;
     };
 };
+
+export enum SortBy {
+    NameAsc = "name.asc",
+    NameDesc = "name.desc",
+    DateAsc = "date.asc",
+    DateDesc = "date.desc",
+}

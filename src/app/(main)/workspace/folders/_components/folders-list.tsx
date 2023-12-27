@@ -1,31 +1,39 @@
 "use client";
 
+import { AnimatePresence } from "framer-motion";
 import { FolderCard } from "@/components/folder/ui/folder-card";
 import { CreateFolder } from "./create-folder";
 import { useFolders } from "@/context/folders";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { SelectSortBy } from "./ui/select-sort";
+import { folderCardVariant } from "@/animations/folder";
 
 export function FoldersList() {
-    const { folders } = useFolders();
+    const { folders, orderBy, setOrderBy } = useFolders();
 
     return (
-        <section className="grid h-full grid-cols-1 grid-rows-layout gap-3">
-            <div className="">
-                <CreateFolder />
-
-                <Input />
-                <Button>Rechercher</Button>
-                <Button>ASC</Button>
-                <Button>desc</Button>
+        <section className="grid h-full  grid-rows-layout gap-3">
+            <div className="flex">
+                {/* <Input /> */}
+                <SelectSortBy defaultValue={orderBy} onChange={(value) => setOrderBy(value)} />
             </div>
 
             <ScrollArea>
-                <div className="grid grid-cols-folders gap-2">
-                    {folders.map((folder) => (
-                        <FolderCard key={folder.id} folder={folder} />
-                    ))}
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+                    <CreateFolder />
+
+                    <AnimatePresence initial={false}>
+                        {folders.map((folder) => (
+                            <FolderCard
+                                key={folder.id}
+                                folder={folder}
+                                variants={folderCardVariant}
+                                initial="add"
+                                animate="current"
+                                exit="remove"
+                            />
+                        ))}
+                    </AnimatePresence>
                 </div>
             </ScrollArea>
         </section>
