@@ -6,7 +6,7 @@ import {
     createContext,
     useState,
     useContext,
-    useEffect,
+    // useEffect,
     useMemo,
     type Dispatch,
     type SetStateAction,
@@ -14,6 +14,7 @@ import {
 
 type FoldersContext = {
     folders: Folder[];
+    setFoldersList: Dispatch<SetStateAction<Folder[]>>;
     deleteFolder: (id: string) => void;
     addFolder: (newFolder: Folder) => void;
     orderBy: SortBy;
@@ -28,13 +29,20 @@ type Props = {
 };
 
 export function FoldersProvider({ children, folders }: Props) {
-    const [foldersList, setFoldersList] = useState<Folder[]>(folders);
     const [orderBy, setOrderBy] = useState(SortBy.NameAsc);
+    const [foldersList, setFoldersList] = useState<Folder[]>(() => sortBy(folders));
 
-    useEffect(() => {
-        console.log("useEffect");
-        setFoldersList(sortBy(foldersList));
-    }, [orderBy]);
+    console.log(1);
+
+    const sortedFolderList = useMemo(() => {
+        console.log("useMemo");
+        return sortBy(foldersList);
+    }, [foldersList, orderBy]);
+
+    // useEffect(() => {
+    //     console.log("useEffect");
+    //     setFoldersList(sortBy(foldersList));
+    // }, [orderBy]);
 
     function deleteFolder(id: string) {
         const newFolderList = foldersList.filter((folder) => folder.id !== id);
@@ -43,7 +51,7 @@ export function FoldersProvider({ children, folders }: Props) {
 
     function addFolder(newFolder: Folder) {
         const newFolderList = [...foldersList, newFolder];
-        setFoldersList(sortBy(newFolderList));
+        setFoldersList(newFolderList);
     }
 
     function sortBy(folders: Folder[]): Folder[] {
@@ -69,7 +77,14 @@ export function FoldersProvider({ children, folders }: Props) {
 
     return (
         <FoldersContext.Provider
-            value={{ folders: foldersList, deleteFolder, addFolder, orderBy, setOrderBy }}
+            value={{
+                folders: sortedFolderList,
+                setFoldersList,
+                deleteFolder,
+                addFolder,
+                orderBy,
+                setOrderBy,
+            }}
         >
             {children}
         </FoldersContext.Provider>

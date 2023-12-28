@@ -1,5 +1,5 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { getServerSession, Session, type NextAuthOptions } from "next-auth";
+import { getServerSession, type Session, type NextAuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import GithubProvider from "next-auth/providers/github";
 
@@ -40,6 +40,4 @@ export const authOptions: NextAuthOptions = {
 };
 
 export const getAuthSession = (): Promise<Session | null> =>
-    new Promise((res) =>
-        setTimeout(() => res(getServerSession(authOptions)), 0),
-    );
+    new Promise((res) => setTimeout(() => res(getServerSession(authOptions)), 0));

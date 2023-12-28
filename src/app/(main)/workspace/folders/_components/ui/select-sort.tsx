@@ -15,7 +15,7 @@ type Props = {
     defaultValue: SortBy;
 };
 
-export function SelectSortBy({ onChange, defaultValue }: Props) {
+export function SelectOrderBy({ onChange, defaultValue }: Props) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (

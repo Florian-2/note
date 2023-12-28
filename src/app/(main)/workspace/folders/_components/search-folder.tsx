@@ -4,42 +4,37 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
 import { Button } from "@/components/ui/button";
-import { createFolderSchema, type CreateFolderType } from "@/shared/validators/folder";
+import { type SearchFolderType, searchFolderSchema } from "@/shared/validators/folder";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { FolderSearch, Loader2 } from "lucide-react";
 import { useFolders } from "@/context/folders";
 
 export function SearchFolder() {
-    // const { addFolder } = useFolders();
-    const { mutate, isLoading } = api.folders.create.useMutation({
-        onError(error) {
-            if (error.data?.zodError) {
-                return form.setError("root", { message: "La validation du formulaire a échoué" });
-            }
-        },
+    const { setFoldersList } = useFolders();
+    const { mutate, isLoading } = api.folders.searchFolder.useMutation({
         onSuccess(data) {
-            console.log(data);
+            setFoldersList(data);
         },
     });
 
-    const form = useForm<CreateFolderType>({
-        resolver: zodResolver(createFolderSchema),
+    const form = useForm<SearchFolderType>({
+        resolver: zodResolver(searchFolderSchema),
         defaultValues: {
-            name: "",
+            query: "",
         },
     });
 
-    function onSubmit(values: CreateFolderType) {
-        mutate({ name: values.name });
+    function onSubmit(values: SearchFolderType) {
+        mutate({ query: values.query });
     }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center gap-2">
                 <FormField
                     control={form.control}
-                    name="name"
+                    name="query"
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
@@ -51,9 +46,8 @@ export function SearchFolder() {
                     )}
                 />
 
-                <Button type="submit" disabled={isLoading}>
-                    {isLoading && <Loader2 className="animate-spin" />}
-                    <FolderSearch />
+                <Button type="submit" disabled={isLoading} className="px-2">
+                    {isLoading ? <Loader2 className="animate-spin" /> : <FolderSearch />}
                     <span className="sr-only">Rechercher un dossier</span>
                 </Button>
             </form>

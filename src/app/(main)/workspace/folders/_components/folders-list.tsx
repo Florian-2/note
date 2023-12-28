@@ -5,17 +5,18 @@ import { FolderCard } from "@/components/folder/ui/folder-card";
 import { CreateFolder } from "./create-folder";
 import { useFolders } from "@/context/folders";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { SelectSortBy } from "./ui/select-sort";
+import { SelectOrderBy } from "./ui/select-sort";
 import { folderCardVariant } from "@/animations/folder";
+import { SearchFolder } from "./search-folder";
 
 export function FoldersList() {
     const { folders, orderBy, setOrderBy } = useFolders();
 
     return (
-        <section className="grid h-full  grid-rows-layout gap-3">
-            <div className="flex">
-                {/* <Input /> */}
-                <SelectSortBy defaultValue={orderBy} onChange={(value) => setOrderBy(value)} />
+        <section className="grid h-full grid-rows-layout gap-3">
+            <div className="flex flex-col gap-2">
+                <SearchFolder />
+                <SelectOrderBy defaultValue={orderBy} onChange={(value) => setOrderBy(value)} />
             </div>
 
             <ScrollArea>
