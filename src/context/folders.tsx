@@ -1,23 +1,28 @@
 "use client";
 
-import { type Folder, SortBy } from "@/shared/types/folders";
 import {
-    type ReactNode,
     createContext,
     useState,
     useContext,
-    // useEffect,
     useMemo,
+    type ReactNode,
     type Dispatch,
     type SetStateAction,
 } from "react";
+import { useRouter } from "next/navigation";
+import { api } from "@/trpc/react";
+import { toast } from "@/components/ui/use-toast";
+import type { UseFormReturn } from "react-hook-form";
+import { type Folder, SortBy } from "@/shared/types/folders";
+import type { CreateFolderType } from "@/shared/validators/folder";
 
 type FoldersContext = {
     folders: Folder[];
-    setFoldersList: Dispatch<SetStateAction<Folder[]>>;
-    deleteFolder: (id: string) => void;
-    addFolder: (newFolder: Folder) => void;
+    addFolder: (
+        form: UseFormReturn<CreateFolderType>,
+    ) => ReturnType<typeof api.folders.create.useMutation>;
     orderBy: SortBy;
+    deleteFolder: () => ReturnType<typeof api.folders.deleteFolder.useMutation>;
     setOrderBy: Dispatch<SetStateAction<SortBy>>;
 };
 
@@ -29,32 +34,10 @@ type Props = {
 };
 
 export function FoldersProvider({ children, folders }: Props) {
+    const router = useRouter();
     const [orderBy, setOrderBy] = useState(SortBy.NameAsc);
-    const [foldersList, setFoldersList] = useState<Folder[]>(() => sortBy(folders));
-
-    console.log(1);
 
     const sortedFolderList = useMemo(() => {
-        console.log("useMemo");
-        return sortBy(foldersList);
-    }, [foldersList, orderBy]);
-
-    // useEffect(() => {
-    //     console.log("useEffect");
-    //     setFoldersList(sortBy(foldersList));
-    // }, [orderBy]);
-
-    function deleteFolder(id: string) {
-        const newFolderList = foldersList.filter((folder) => folder.id !== id);
-        setFoldersList(newFolderList);
-    }
-
-    function addFolder(newFolder: Folder) {
-        const newFolderList = [...foldersList, newFolder];
-        setFoldersList(newFolderList);
-    }
-
-    function sortBy(folders: Folder[]): Folder[] {
         const newFolderList = folders.slice();
 
         switch (orderBy) {
@@ -71,17 +54,51 @@ export function FoldersProvider({ children, folders }: Props) {
                 return newFolderList.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
             default:
-                return foldersList;
+                return folders;
         }
+    }, [orderBy, folders]);
+
+    function deleteFolder() {
+        return api.folders.deleteFolder.useMutation({
+            onSuccess() {
+                router.refresh();
+            },
+            onError() {
+                toast({
+                    variant: "destructive",
+                    description: "La suppression du dossier a échoué !",
+                });
+            },
+        });
+    }
+
+    function addFolder(form: UseFormReturn<CreateFolderType>) {
+        return api.folders.create.useMutation({
+            onError(error) {
+                if (error.data?.code === "CONFLICT") {
+                    return form.setError("name", {
+                        message: "Ce nom de dossier est déjà utilisé",
+                    });
+                }
+
+                if (error.data?.zodError) {
+                    return form.setError("root", {
+                        message: "La validation du formulaire a échoué",
+                    });
+                }
+            },
+            onSuccess() {
+                router.refresh();
+            },
+        });
     }
 
     return (
         <FoldersContext.Provider
             value={{
                 folders: sortedFolderList,
-                setFoldersList,
-                deleteFolder,
                 addFolder,
+                deleteFolder,
                 orderBy,
                 setOrderBy,
             }}

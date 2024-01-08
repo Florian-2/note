@@ -6,7 +6,7 @@ export default async function LoginPage() {
     const session = await getAuthSession();
 
     if (session?.user) {
-        redirect("/workspace");
+        redirect("/workspace/folders");
     }
 
     return (

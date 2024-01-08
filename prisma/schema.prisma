@@ -29,8 +29,9 @@ model Folder {
 	name        String      @unique
 	createdAt   DateTime    @default(now())
 	updatedAt   DateTime    @updatedAt
+    isDeleted   Boolean     @default(false)
 
-	createdBy   User        @relation(fields: [createdById], references: [id]) // Un dossier appartient à un utilisateur
+	createdBy   User        @relation(fields: [createdById], references: [id], onDelete: Cascade) // Un dossier appartient à un utilisateur
   	createdById String      // Référence à l'utilisateur propriétaire du dossier
 
 	notes       Note[]      // Un dossier peut contenir plusieurs notes

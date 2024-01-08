@@ -7,6 +7,12 @@ export type Folder = FolderPrisma & {
     };
 };
 
+export type FolderWithCount = Folder & {
+    _count: {
+        notes: number;
+    };
+};
+
 export enum SortBy {
     NameAsc = "name.asc",
     NameDesc = "name.desc",

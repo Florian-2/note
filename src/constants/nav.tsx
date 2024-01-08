@@ -12,7 +12,7 @@ export const navItems = [
         href: "/workspace/notes",
     },
     {
-        name: "Favories",
+        name: "Favoris",
         icon: Star,
         href: "/workspace/favories",
     },

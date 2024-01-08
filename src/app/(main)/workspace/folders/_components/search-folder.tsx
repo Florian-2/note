@@ -1,56 +1,39 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { api } from "@/trpc/react";
+import type { FormEvent } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { type SearchFolderType, searchFolderSchema } from "@/shared/validators/folder";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { FolderSearch, Loader2 } from "lucide-react";
-import { useFolders } from "@/context/folders";
+import { FolderSearch } from "lucide-react";
 
 export function SearchFolder() {
-    const { setFoldersList } = useFolders();
-    const { mutate, isLoading } = api.folders.searchFolder.useMutation({
-        onSuccess(data) {
-            setFoldersList(data);
-        },
-    });
+    const searchParams = useSearchParams();
 
-    const form = useForm<SearchFolderType>({
-        resolver: zodResolver(searchFolderSchema),
-        defaultValues: {
-            query: "",
-        },
-    });
+    function handleSubmit(e: FormEvent) {
+        e.preventDefault();
 
-    function onSubmit(values: SearchFolderType) {
-        mutate({ query: values.query });
+        const form = e.currentTarget as HTMLFormElement;
+        const query = new FormData(form).get("query");
+        const searchQueryParams = searchParams.get("query");
+
+        if (searchQueryParams === query) return;
+
+        form.submit();
     }
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center gap-2">
-                <FormField
-                    control={form.control}
-                    name="query"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormControl>
-                                <Input {...field} placeholder="Rechercher un dossier" />
-                            </FormControl>
+        <form onSubmit={handleSubmit} method="GET" className="flex items-center gap-2">
+            <Input
+                name="query"
+                defaultValue={searchParams.get("query") ?? ""}
+                placeholder="Rechercher un dossier"
+                className="h-fit p-3 md:min-w-[250px]"
+            />
 
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-                <Button type="submit" disabled={isLoading} className="px-2">
-                    {isLoading ? <Loader2 className="animate-spin" /> : <FolderSearch />}
-                    <span className="sr-only">Rechercher un dossier</span>
-                </Button>
-            </form>
-        </Form>
+            <Button variant={"secondary"} type="submit" className="h-full">
+                <FolderSearch strokeWidth={1.5} />
+                <span className="sr-only">Rechercher un dossier</span>
+            </Button>
+        </form>
     );
 }

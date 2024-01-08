@@ -1,9 +1,7 @@
 "use client";
 
 import { ContextMenuItem } from "@/components/ui/context-menu";
-import { api } from "@/trpc/react";
 import { Loader2 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
 import { useFolders } from "@/context/folders";
 
 type Props = {
@@ -11,20 +9,9 @@ type Props = {
 };
 
 export function DeleteFolderButton({ id }: Props) {
-    const { toast } = useToast();
     const { deleteFolder } = useFolders();
 
-    const { mutate, isLoading } = api.folders.deleteFolder.useMutation({
-        onSuccess(deletedFolder) {
-            deleteFolder(deletedFolder.id);
-        },
-        onError() {
-            toast({
-                variant: "destructive",
-                description: "La suppression du dossier a échoué !",
-            });
-        },
-    });
+    const { mutate, isLoading } = deleteFolder();
 
     function handleSelect(e: Event) {
         e.preventDefault();

@@ -11,14 +11,11 @@ export const createFolderSchema = z.object({
 });
 export type CreateFolderType = z.infer<typeof createFolderSchema>;
 
-// export const searchFolderSchema = z.object({
-//     query: z.string().min(1, { message: "Veuillez renseigner un nom de dossier" }),
-// });
 export const searchFolderSchema = z.object({
     query: z.string().default(""),
 });
 export type SearchFolderType = z.infer<typeof searchFolderSchema>;
 
-export const deleteFolderSchema = z.object({
+export const folderIdSchema = z.object({
     folderId: z.string().min(20, { message: "L'identifiant du dossier est requis" }),
 });

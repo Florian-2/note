@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { api } from "@/trpc/react";
 import { Button } from "@/components/ui/button";
 import { createFolderSchema, type CreateFolderType } from "@/shared/validators/folder";
 import {
@@ -16,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { useFolders } from "@/context/folders";
+import { useEffect } from "react";
 
 type Props = {
     onClose: () => void;
@@ -23,24 +23,6 @@ type Props = {
 
 export function FolderForm({ onClose }: Props) {
     const { addFolder } = useFolders();
-    const { mutate, isLoading } = api.folders.create.useMutation({
-        onError(error) {
-            if (error.data?.code === "CONFLICT") {
-                return form.setError("name", {
-                    message: "Ce nom de dossier est déjà utilisé",
-                });
-            }
-
-            if (error.data?.zodError) {
-                return form.setError("root", { message: "La validation du formulaire a échoué" });
-            }
-        },
-        onSuccess(data) {
-            if (data) addFolder(data);
-
-            onClose();
-        },
-    });
 
     const form = useForm<CreateFolderType>({
         resolver: zodResolver(createFolderSchema),
@@ -49,10 +31,15 @@ export function FolderForm({ onClose }: Props) {
         },
     });
     const { formState } = form;
+    const { mutate, isLoading, isSuccess } = addFolder(form);
 
-    function onSubmit(values: CreateFolderType) {
-        mutate({ name: values.name });
-    }
+    useEffect(() => {
+        if (isSuccess) {
+            onClose();
+        }
+    }, [isSuccess]);
+
+    const onSubmit = (values: CreateFolderType) => mutate({ name: values.name });
 
     return (
         <Form {...form}>

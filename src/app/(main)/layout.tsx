@@ -23,7 +23,7 @@ export default async function MainLayout({ children }: Props) {
             <div className="flex h-screen overflow-hidden">
                 <Sidebar />
 
-                <main className="max-h-screen flex-1 overflow-hidden px-3 pt-16">{children}</main>
+                <main className="max-h-screen flex-1 overflow-hidden">{children}</main>
             </div>
 
             <Toaster />
