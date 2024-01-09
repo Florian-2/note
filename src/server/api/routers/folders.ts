@@ -32,7 +32,7 @@ export const folderRouter = createTRPCRouter({
             where: {
                 createdBy: { id: userId },
                 ...(input.query && { name: { contains: input.query } }),
-                isDeleted: false,
+                isArchived: false,
             },
             include: { _count: true },
             orderBy: { name: "asc" },
@@ -46,7 +46,7 @@ export const folderRouter = createTRPCRouter({
             where: {
                 createdBy: { id: userId },
                 ...(input.query && { name: { contains: input.query } }),
-                isDeleted: true,
+                isArchived: true,
             },
             include: { _count: true },
             orderBy: { name: "asc" },
@@ -59,7 +59,7 @@ export const folderRouter = createTRPCRouter({
             const userId = ctx.session.user.id;
 
             return ctx.db.folder.findFirst({
-                where: { createdBy: { id: userId }, AND: { name: input.name }, isDeleted: false },
+                where: { createdBy: { id: userId }, AND: { name: input.name }, isArchived: false },
                 include: { notes: true },
                 orderBy: { name: "asc" },
             });
@@ -71,7 +71,7 @@ export const folderRouter = createTRPCRouter({
             const userId = ctx.session.user.id;
 
             return ctx.db.folder.findFirst({
-                where: { createdBy: { id: userId }, AND: { id: input.id }, isDeleted: false },
+                where: { createdBy: { id: userId }, AND: { id: input.id }, isArchived: false },
                 include: { notes: true },
                 orderBy: { name: "asc" },
             });
@@ -81,18 +81,22 @@ export const folderRouter = createTRPCRouter({
         const userId = ctx.session.user.id;
 
         return ctx.db.folder.findMany({
-            where: { createdBy: { id: userId }, name: { contains: input.query }, isDeleted: false },
+            where: {
+                createdBy: { id: userId },
+                name: { contains: input.query },
+                isArchived: false,
+            },
             include: { _count: true },
             orderBy: { name: "asc" },
         });
     }),
 
-    deleteFolder: protectedProcedure.input(folderIdSchema).mutation(async ({ ctx, input }) => {
+    archiveFolder: protectedProcedure.input(folderIdSchema).mutation(async ({ ctx, input }) => {
         const userId = ctx.session.user.id;
 
         return ctx.db.folder.update({
             where: { createdBy: { id: userId }, id: input.folderId },
-            data: { isDeleted: true },
+            data: { isArchived: true },
         });
     }),
 
@@ -101,7 +105,24 @@ export const folderRouter = createTRPCRouter({
 
         return ctx.db.folder.update({
             where: { createdBy: { id: userId }, id: input.folderId },
-            data: { isDeleted: false },
+            data: { isArchived: false },
+        });
+    }),
+
+    restoresAllArchivedFolders: protectedProcedure.mutation(async ({ ctx }) => {
+        const userId = ctx.session.user.id;
+
+        return ctx.db.folder.updateMany({
+            where: { createdBy: { id: userId }, isArchived: true },
+            data: { isArchived: false },
+        });
+    }),
+
+    deletesAllArchivedFolders: protectedProcedure.mutation(async ({ ctx }) => {
+        const userId = ctx.session.user.id;
+
+        return ctx.db.folder.deleteMany({
+            where: { createdBy: { id: userId }, isArchived: true },
         });
     }),
 });

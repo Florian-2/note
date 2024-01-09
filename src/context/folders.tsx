@@ -22,7 +22,7 @@ type FoldersContext = {
         form: UseFormReturn<CreateFolderType>,
     ) => ReturnType<typeof api.folders.create.useMutation>;
     orderBy: SortBy;
-    deleteFolder: () => ReturnType<typeof api.folders.deleteFolder.useMutation>;
+    archiveFolder: () => ReturnType<typeof api.folders.archiveFolder.useMutation>;
     setOrderBy: Dispatch<SetStateAction<SortBy>>;
 };
 
@@ -58,8 +58,8 @@ export function FoldersProvider({ children, folders }: Props) {
         }
     }, [orderBy, folders]);
 
-    function deleteFolder() {
-        return api.folders.deleteFolder.useMutation({
+    function archiveFolder() {
+        return api.folders.archiveFolder.useMutation({
             onSuccess() {
                 router.refresh();
             },
@@ -98,7 +98,7 @@ export function FoldersProvider({ children, folders }: Props) {
             value={{
                 folders: sortedFolderList,
                 addFolder,
-                deleteFolder,
+                archiveFolder,
                 orderBy,
                 setOrderBy,
             }}

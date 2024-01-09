@@ -14,7 +14,6 @@ model Note {
 	createdAt   DateTime   @default(now())
 	updatedAt   DateTime   @updatedAt
 
-	// Modification de la relation createdBy
 	// createdBy   User        @relation("CreatedBy", fields: [createdById], references: [id])
 	// createdById String
 
@@ -29,7 +28,7 @@ model Folder {
 	name        String      @unique
 	createdAt   DateTime    @default(now())
 	updatedAt   DateTime    @updatedAt
-    isDeleted   Boolean     @default(false)
+    isArchived  Boolean     @default(false)
 
 	createdBy   User        @relation(fields: [createdById], references: [id], onDelete: Cascade) // Un dossier appartient à un utilisateur
   	createdById String      // Référence à l'utilisateur propriétaire du dossier

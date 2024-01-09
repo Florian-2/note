@@ -28,7 +28,7 @@ export function PopoverAccount() {
                 </div>
 
                 <div className="space-y-2">
-                    <Link href="/workspace">
+                    <Link href="/workspace/folders">
                         <Button
                             variant={"secondary"}
                             className="w-full justify-start gap-2 text-base font-medium hover:text-primary"

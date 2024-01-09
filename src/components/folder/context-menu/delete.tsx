@@ -9,9 +9,9 @@ type Props = {
 };
 
 export function DeleteFolderButton({ id }: Props) {
-    const { deleteFolder } = useFolders();
+    const { archiveFolder } = useFolders();
 
-    const { mutate, isLoading } = deleteFolder();
+    const { mutate, isLoading } = archiveFolder();
 
     function handleSelect(e: Event) {
         e.preventDefault();

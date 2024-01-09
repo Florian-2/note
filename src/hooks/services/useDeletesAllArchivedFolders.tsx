@@ -4,18 +4,18 @@ import { toast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 
-export function useRestoreFolder() {
+export function useDeletesAllArchivedFolders() {
     const router = useRouter();
 
-    return api.folders.restoreFolder.useMutation({
+    return api.folders.deletesAllArchivedFolders.useMutation({
         onSuccess() {
-            router.push("/workspace/folders");
+            // router.push("/workspace/folders");
             router.refresh();
         },
         onError() {
             toast({
                 variant: "destructive",
-                description: "La restauration du dossier a échoué !",
+                description: "La suppression des dossiers a échoué !",
             });
         },
     });

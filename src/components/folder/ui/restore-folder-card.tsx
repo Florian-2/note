@@ -4,13 +4,12 @@ import {
     AlertDialogHeader,
     AlertDialogFooter,
     AlertDialog,
-    AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { RestoreFolderAction } from "../context-menu/restore";
+import { RestoreFolderAction } from "../dialog-action/restore";
 
 type Props = {
     folder: FolderWithCount;
