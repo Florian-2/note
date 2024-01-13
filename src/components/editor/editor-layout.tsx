@@ -1,22 +1,29 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import type { Note } from "@prisma/client";
 import { NoteCard } from "../note/ui/note-card";
-
-const Editor = dynamic(() => import("@/components/editor/editor"), { ssr: false });
+import { type ReactNode } from "react";
+import { CreateNoteModal } from "@/app/(main)/workspace/folders/[folderId]/[noteId]/_components/create-note-modal";
 
 type Props = {
     notes: Note[];
+    children: ReactNode;
 };
 
-export function Notes({ notes }: Props) {
+export function Notes({ notes, children }: Props) {
     return (
         <>
             <ResizablePanelGroup direction="horizontal">
-                <ResizablePanel defaultSize={25} minSize={20} maxSize={30}>
-                    <ul className="flex h-screen flex-col gap-2 p-2">
+                <ResizablePanel
+                    defaultSize={25}
+                    minSize={20}
+                    maxSize={30}
+                    className="space-y-6 p-3"
+                >
+                    <CreateNoteModal />
+
+                    <ul className="flex min-h-full flex-col gap-3">
                         {notes.map((note) => (
                             <li key={note.id}>
                                 <NoteCard note={note} />
@@ -27,9 +34,7 @@ export function Notes({ notes }: Props) {
 
                 <ResizableHandle withHandle />
 
-                <ResizablePanel defaultSize={75}>
-                    <Editor />
-                </ResizablePanel>
+                <ResizablePanel defaultSize={75}>{children}</ResizablePanel>
             </ResizablePanelGroup>
         </>
     );

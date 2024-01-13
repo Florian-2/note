@@ -9,7 +9,6 @@ export function useDeletesAllArchivedFolders() {
 
     return api.folders.deletesAllArchivedFolders.useMutation({
         onSuccess() {
-            // router.push("/workspace/folders");
             router.refresh();
         },
         onError() {

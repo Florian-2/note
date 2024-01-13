@@ -3,7 +3,7 @@
 import { type MouseEvent } from "react";
 import { Loader2 } from "lucide-react";
 import { AlertDialogAction } from "@/components/ui/alert-dialog";
-import { useRestoreFolder } from "@/hooks/services";
+import { useRestoreFolder } from "@/hooks/services/folders";
 
 type Props = {
     folderId: string;

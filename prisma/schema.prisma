@@ -1,85 +1,86 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Note {
-	id          String     @id @default(cuid())
-	name        String     @unique
-	content     String
-	createdAt   DateTime   @default(now())
-	updatedAt   DateTime   @updatedAt
+  id        String   @id @default(cuid())
+  name      String   @unique
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-	// createdBy   User        @relation("CreatedBy", fields: [createdById], references: [id])
-	// createdById String
+  createdBy   User   @relation(fields: [createdById], references: [id]) // Une note est créée par UN utilisateur
+  createdById String
 
-	folder      Folder    @relation(fields: [folderId], references: [id]) // Une note appartient à UN dossier
-	folderId    String    // Référence au dossier
+  folder   Folder @relation(fields: [folderId], references: [id]) // Une note appartient à UN dossier
+  folderId String // Référence au dossier
 
-	@@index([name])
+  @@index([name])
 }
 
 model Folder {
-	id          String      @id @default(cuid())
-	name        String      @unique
-	createdAt   DateTime    @default(now())
-	updatedAt   DateTime    @updatedAt
-    isArchived  Boolean     @default(false)
+  id         String   @id @default(cuid())
+  name       String   @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  isArchived Boolean  @default(false)
 
-	createdBy   User        @relation(fields: [createdById], references: [id], onDelete: Cascade) // Un dossier appartient à un utilisateur
-  	createdById String      // Référence à l'utilisateur propriétaire du dossier
+  createdBy   User   @relation(fields: [createdById], references: [id], onDelete: Cascade) // Un dossier appartient à un utilisateur
+  createdById String // Référence à l'utilisateur propriétaire du dossier
 
-	notes       Note[]      // Un dossier peut contenir plusieurs notes
+  notes Note[] // Un dossier peut contenir plusieurs notes
 
-	@@index([name])
+  @@index([name])
 }
 
 model User {
-	id            String    @id @default(cuid())
-	name          String?
-	email         String?   @unique
-	emailVerified DateTime?
-	image         String?
-	accounts      Account[]
-	sessions      Session[]
-	folders       Folder[]  // Un utilisateur peut avoir plusieurs dossiers
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  folders       Folder[] // Un utilisateur peut avoir plusieurs dossiers
+  note          Note[]
 }
 
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
-    refresh_token_expires_in Int?
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? // @db.Text
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? // @db.Text
+  access_token             String? // @db.Text
+  refresh_token_expires_in Int?
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? // @db.Text
+  session_state            String?
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@unique([provider, providerAccountId])
+  @@unique([provider, providerAccountId])
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
-    @@unique([identifier, token])
+  @@unique([identifier, token])
 }

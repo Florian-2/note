@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useRestoresAllArchivedFolders } from "@/hooks/services";
+import { useRestoresAllArchivedFolders } from "@/hooks/services/folders";
 import { ArchiveRestore, Loader2 } from "lucide-react";
 import { useState } from "react";
 

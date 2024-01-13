@@ -2,13 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useDeletesAllArchivedFolders } from "@/hooks/services";
+import { useDeletesAllArchivedFolders } from "@/hooks/services/folders";
 import { Loader2, Trash } from "lucide-react";
 import { useState } from "react";
 
-export function DeletesAllFolder() {
-    const title = "Vider la corbeille";
+const TITLE = "Vider la corbeille";
 
+export function DeletesAllFolder() {
     const { isLoading, mutate } = useDeletesAllArchivedFolders();
     const [isClicked, setIsClicked] = useState(false);
 
@@ -35,12 +35,12 @@ export function DeletesAllFolder() {
                         />
                     )}
 
-                    <span className="sr-only">{title}</span>
+                    <span className="sr-only">{TITLE}</span>
                 </Button>
             </TooltipTrigger>
 
             <TooltipContent>
-                <p>{title}</p>
+                <p>{TITLE}</p>
             </TooltipContent>
         </Tooltip>
     );

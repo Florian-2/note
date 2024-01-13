@@ -4,11 +4,11 @@ import { ContextMenuItem } from "@/components/ui/context-menu";
 import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 
 type Props = {
-    folderName: string;
+    copyValue: string;
 };
 
-export function CopyFolderNameButton({ folderName }: Props) {
+export function ContextMenuCopy({ copyValue }: Props) {
     const [, copy] = useCopyToClipboard();
 
-    return <ContextMenuItem onSelect={() => copy(folderName)}>Copier le nom</ContextMenuItem>;
+    return <ContextMenuItem onSelect={() => copy(copyValue)}>Copier le nom</ContextMenuItem>;
 }

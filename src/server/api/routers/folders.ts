@@ -7,10 +7,12 @@ import { z } from "zod";
 export const folderRouter = createTRPCRouter({
     create: protectedProcedure.input(createFolderSchema).mutation(async ({ ctx, input }) => {
         try {
+            const userId = ctx.session.user.id;
+
             return await ctx.db.folder.create({
                 data: {
                     name: input.name,
-                    createdBy: { connect: { id: ctx.session.user.id } },
+                    createdBy: { connect: { id: userId } },
                 },
                 include: { _count: true },
             });

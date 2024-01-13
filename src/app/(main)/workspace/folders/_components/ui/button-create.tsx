@@ -1,16 +1,18 @@
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { forwardRef } from "react";
 
 type Props = {
     onClick: () => void;
 };
 
-export function CreateFolderButton({ onClick }: Props) {
+export const CreateFolderButton = forwardRef<HTMLButtonElement, Props>(({ onClick }, ref) => {
     return (
         <Tooltip>
             <TooltipTrigger asChild>
                 <Button
+                    ref={ref}
                     variant={"outline"}
                     className="h-full w-full border-2 border-dashed dark:border-foreground/60"
                     onClick={onClick}
@@ -25,4 +27,4 @@ export function CreateFolderButton({ onClick }: Props) {
             </TooltipContent>
         </Tooltip>
     );
-}
+});
