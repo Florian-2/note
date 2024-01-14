@@ -1,8 +1,10 @@
 "use client";
 
-import { ContextMenuContent, ContextMenuItem } from "@/components/ui/context-menu";
+import { ContextMenuContent } from "@/components/ui/context-menu";
 import { ContextMenuCopy, ContextMenuDelete } from "@/components/ui/context-menu-item";
-import { useFolders } from "@/context/folders";
+import { ContextMenuFavori } from "@/components/ui/context-menu-item/favori";
+import { useArchiveFolder } from "@/hooks/services/folders";
+import { useFavoriteFolder } from "@/hooks/services/folders/useFavoriteFolder";
 import type { Folder } from "@prisma/client";
 
 type Props = {
@@ -10,18 +12,26 @@ type Props = {
 };
 
 export function ContextMenuItems({ folder }: Props) {
-    const { archiveFolder } = useFolders();
-    const { mutate, isLoading } = archiveFolder();
+    const { mutate: mutateArchiveFolder, isLoading: archiveFolderLoading } = useArchiveFolder();
+    const { mutate: mutateFavoriteFolder, isLoading: favoriteFolderLoading } = useFavoriteFolder();
 
     return (
         <ContextMenuContent>
             <ContextMenuCopy copyValue={folder.name} />
-            <ContextMenuItem disabled>Favori</ContextMenuItem>
-            <ContextMenuDelete
-                disabled={isLoading}
+            <ContextMenuFavori
+                disabled={favoriteFolderLoading}
                 onSelect={(e) => {
                     e.preventDefault();
-                    mutate({ folderId: folder.id });
+                    mutateFavoriteFolder({ folderId: folder.id });
+                }}
+            >
+                Favori
+            </ContextMenuFavori>
+            <ContextMenuDelete
+                disabled={archiveFolderLoading}
+                onSelect={(e) => {
+                    e.preventDefault();
+                    mutateArchiveFolder({ folderId: folder.id });
                 }}
             />
         </ContextMenuContent>

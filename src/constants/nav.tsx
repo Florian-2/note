@@ -14,7 +14,7 @@ export const navItems = [
     {
         name: "Favoris",
         icon: Star,
-        href: "/workspace/favories",
+        href: "/workspace/favorites",
     },
     {
         name: "Corbeille",

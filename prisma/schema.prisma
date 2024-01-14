@@ -17,8 +17,8 @@ model Note {
   createdBy   User   @relation(fields: [createdById], references: [id]) // Une note est créée par UN utilisateur
   createdById String
 
-  folder   Folder @relation(fields: [folderId], references: [id]) // Une note appartient à UN dossier
-  folderId String // Référence au dossier
+  folder      Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId    String
 
   @@index([name])
 }
@@ -29,11 +29,12 @@ model Folder {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   isArchived Boolean  @default(false)
+  isFavorite Boolean  @default(false)
 
-  createdBy   User   @relation(fields: [createdById], references: [id], onDelete: Cascade) // Un dossier appartient à un utilisateur
+  createdBy   User   @relation(fields: [createdById], references: [id]) // Un dossier appartient à un utilisateur
   createdById String // Référence à l'utilisateur propriétaire du dossier
 
-  notes Note[] // Un dossier peut contenir plusieurs notes
+  notes Note[]
 
   @@index([name])
 }

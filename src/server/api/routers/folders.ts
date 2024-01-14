@@ -79,6 +79,16 @@ export const folderRouter = createTRPCRouter({
             });
         }),
 
+    getAllFavoriteFolders: protectedProcedure.query(({ ctx }) => {
+        const userId = ctx.session.user.id;
+
+        return ctx.db.folder.findMany({
+            where: { createdBy: { id: userId }, isFavorite: true },
+            include: { _count: true },
+            orderBy: { name: "asc" },
+        });
+    }),
+
     searchFolder: protectedProcedure.input(searchFolderSchema).mutation(({ ctx, input }) => {
         const userId = ctx.session.user.id;
 
@@ -90,6 +100,15 @@ export const folderRouter = createTRPCRouter({
             },
             include: { _count: true },
             orderBy: { name: "asc" },
+        });
+    }),
+
+    favoriteFolder: protectedProcedure.input(folderIdSchema).mutation(async ({ ctx, input }) => {
+        const userId = ctx.session.user.id;
+
+        return ctx.db.folder.update({
+            where: { createdBy: { id: userId }, id: input.folderId },
+            data: { isFavorite: true },
         });
     }),
 
