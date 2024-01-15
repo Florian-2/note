@@ -19,3 +19,5 @@ export type SearchFolderType = z.infer<typeof searchFolderSchema>;
 export const folderIdSchema = z.object({
     folderId: z.string().min(20, { message: "L'identifiant du dossier est requis" }),
 });
+
+export const favoriteFolderSchema = folderIdSchema.merge(z.object({ isFavorite: z.boolean() }));

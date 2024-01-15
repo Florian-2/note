@@ -1,7 +1,12 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { createFolderSchema, folderIdSchema, searchFolderSchema } from "@/shared/validators/folder";
+import {
+    createFolderSchema,
+    favoriteFolderSchema,
+    folderIdSchema,
+    searchFolderSchema,
+} from "@/shared/validators/folder";
 import { z } from "zod";
 
 export const folderRouter = createTRPCRouter({
@@ -103,14 +108,16 @@ export const folderRouter = createTRPCRouter({
         });
     }),
 
-    favoriteFolder: protectedProcedure.input(folderIdSchema).mutation(async ({ ctx, input }) => {
-        const userId = ctx.session.user.id;
+    favoriteFolder: protectedProcedure
+        .input(favoriteFolderSchema)
+        .mutation(async ({ ctx, input }) => {
+            const userId = ctx.session.user.id;
 
-        return ctx.db.folder.update({
-            where: { createdBy: { id: userId }, id: input.folderId },
-            data: { isFavorite: true },
-        });
-    }),
+            return ctx.db.folder.update({
+                where: { createdBy: { id: userId }, id: input.folderId },
+                data: { isFavorite: input.isFavorite },
+            });
+        }),
 
     archiveFolder: protectedProcedure.input(folderIdSchema).mutation(async ({ ctx, input }) => {
         const userId = ctx.session.user.id;

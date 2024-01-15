@@ -15,17 +15,16 @@ export function ContextMenuItems({ folder }: Props) {
     const { mutate: mutateArchiveFolder, isLoading: archiveFolderLoading } = useArchiveFolder();
     const { mutate: mutateFavoriteFolder, isLoading: favoriteFolderLoading } = useFavoriteFolder();
 
+    function handleFavorite(e: Event) {
+        e.preventDefault();
+        mutateFavoriteFolder({ folderId: folder.id, isFavorite: !folder.isFavorite });
+    }
+
     return (
         <ContextMenuContent>
             <ContextMenuCopy copyValue={folder.name} />
-            <ContextMenuFavori
-                disabled={favoriteFolderLoading}
-                onSelect={(e) => {
-                    e.preventDefault();
-                    mutateFavoriteFolder({ folderId: folder.id });
-                }}
-            >
-                Favori
+            <ContextMenuFavori disabled={favoriteFolderLoading} onSelect={handleFavorite}>
+                {folder.isFavorite ? "Retirer des favoris" : "Favori"}
             </ContextMenuFavori>
             <ContextMenuDelete
                 disabled={archiveFolderLoading}
