@@ -9,20 +9,11 @@ import {
     type Dispatch,
     type SetStateAction,
 } from "react";
-import { useRouter } from "next/navigation";
-import { api } from "@/trpc/react";
-import { toast } from "@/components/ui/use-toast";
-import type { UseFormReturn } from "react-hook-form";
 import { type Folder, SortBy } from "@/shared/types/folders";
-import type { CreateFolderType } from "@/shared/validators/folder";
 
 type FoldersContext = {
     folders: Folder[];
-    addFolder: (
-        form: UseFormReturn<CreateFolderType>,
-    ) => ReturnType<typeof api.folders.create.useMutation>;
     orderBy: SortBy;
-    archiveFolder: () => ReturnType<typeof api.folders.archiveFolder.useMutation>;
     setOrderBy: Dispatch<SetStateAction<SortBy>>;
 };
 
@@ -34,7 +25,6 @@ type Props = {
 };
 
 export function FoldersProvider({ children, folders }: Props) {
-    const router = useRouter();
     const [orderBy, setOrderBy] = useState(SortBy.NameAsc);
 
     const sortedFolderList = useMemo(() => {
@@ -58,47 +48,11 @@ export function FoldersProvider({ children, folders }: Props) {
         }
     }, [orderBy, folders]);
 
-    function archiveFolder() {
-        return api.folders.archiveFolder.useMutation({
-            onSuccess() {
-                router.refresh();
-            },
-            onError() {
-                toast({
-                    variant: "destructive",
-                    description: "La suppression du dossier a échoué !",
-                });
-            },
-        });
-    }
-
-    function addFolder(form: UseFormReturn<CreateFolderType>) {
-        return api.folders.create.useMutation({
-            onError(error) {
-                if (error.data?.code === "CONFLICT") {
-                    return form.setError("name", {
-                        message: "Ce nom de dossier est déjà utilisé",
-                    });
-                }
-
-                if (error.data?.zodError) {
-                    return form.setError("root", {
-                        message: "La validation du formulaire a échoué",
-                    });
-                }
-            },
-            onSuccess() {
-                router.refresh();
-            },
-        });
-    }
-
     return (
         <FoldersContext.Provider
             value={{
                 folders: sortedFolderList,
-                addFolder,
-                archiveFolder,
+
                 orderBy,
                 setOrderBy,
             }}

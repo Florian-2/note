@@ -14,16 +14,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
-import { useFolders } from "@/context/folders";
 import { useEffect } from "react";
+import { useCreateFolder } from "@/hooks/services/folders";
 
 type Props = {
     onClose: () => void;
 };
 
 export function FolderForm({ onClose }: Props) {
-    const { addFolder } = useFolders();
-
     const form = useForm<CreateFolderType>({
         resolver: zodResolver(createFolderSchema),
         defaultValues: {
@@ -31,7 +29,7 @@ export function FolderForm({ onClose }: Props) {
         },
     });
     const { formState } = form;
-    const { mutate, isLoading, isSuccess } = addFolder(form);
+    const { mutate, isLoading, isSuccess } = useCreateFolder(form);
 
     useEffect(() => {
         if (isSuccess) {
