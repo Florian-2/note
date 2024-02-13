@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/hooks/useSidebar";
@@ -17,6 +17,8 @@ interface SidebarProps {
 export default function Sidebar({ className }: SidebarProps) {
     const { isOpen, toggle } = useSidebar();
     const [swith, setSwitch] = useState(false);
+
+    console.log("render <Sidebar/>");
 
     const handleToggle = () => {
         setSwitch(true);

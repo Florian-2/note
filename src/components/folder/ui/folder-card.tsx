@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Link from "next/link";
 import { forwardRef } from "react";
 import { IconFolder, IconFolderEmpty } from "../icons";
@@ -38,4 +38,4 @@ const component = forwardRef<HTMLDivElement, Props>(function Folder(
     return asLink ? <Link href={`/workspace/folders/${folder.id}`}>{card}</Link> : card;
 });
 
-export const FolderCard = motion(component);
+export const FolderCard = m(component);

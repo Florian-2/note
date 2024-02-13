@@ -9,9 +9,14 @@ import { SelectOrderBy } from "./ui/select-sort";
 import { folderCardVariant } from "@/animations/folder";
 import { SearchFolder } from "./search-folder";
 import { FolderGrid } from "@/components/folder/ui/folder-grid";
+import { type FolderWithCount } from "@/shared/types";
 
-export function FoldersList() {
-    const { folders, orderBy, setOrderBy } = useFolders();
+type Props = {
+    folders: FolderWithCount[];
+};
+
+export function FoldersList({ folders }: Props) {
+    const { folders: foldersList, orderBy, setOrderBy } = useFolders(folders);
 
     return (
         <section className="grid h-full grid-rows-layout gap-10 px-3 pt-20 md:px-6">
@@ -25,7 +30,7 @@ export function FoldersList() {
                     <CreateFolder />
 
                     <AnimatePresence initial={false}>
-                        {folders.map((folder) => (
+                        {foldersList.map((folder) => (
                             <ContextFolderCard
                                 key={folder.id}
                                 folder={folder}

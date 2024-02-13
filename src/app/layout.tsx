@@ -7,6 +7,7 @@ import { TRPCReactProvider } from "@/trpc/react";
 import { ThemeProvider } from "@/components/theme";
 import { AuthProvider } from "@/components/user/auth-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { LazyMotionProvider } from "@/animations/LazyMotionProvider";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -26,7 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <TRPCReactProvider cookies={cookies().toString()}>
                     <AuthProvider>
                         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-                            <TooltipProvider>{children}</TooltipProvider>
+                            <LazyMotionProvider>
+                                <TooltipProvider>{children}</TooltipProvider>
+                            </LazyMotionProvider>
                         </ThemeProvider>
                     </AuthProvider>
                 </TRPCReactProvider>

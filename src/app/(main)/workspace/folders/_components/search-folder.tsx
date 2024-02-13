@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { FolderSearch } from "lucide-react";
 
 export function SearchFolder() {
+    console.log("render <SearchFolder/>");
+
     const searchParams = useSearchParams();
 
     function handleSubmit(e: FormEvent) {

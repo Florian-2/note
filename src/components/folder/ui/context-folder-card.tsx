@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { ContextMenuItems } from "../context-menu/menu";
 import { forwardRef } from "react";
@@ -29,4 +29,4 @@ const component = forwardRef<HTMLElement, Props>(function Folder({ folder }, ref
     );
 });
 
-export const ContextFolderCard = motion(component);
+export const ContextFolderCard = m(component);

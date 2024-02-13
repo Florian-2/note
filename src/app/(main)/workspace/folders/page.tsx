@@ -1,6 +1,6 @@
 import { api } from "@/trpc/server";
 import { FoldersList } from "./_components/folders-list";
-import { FoldersProvider } from "@/context/folders";
+// import { SearchFolder } from "./_components/search-folder";
 
 type Props = {
     searchParams: { query?: string };
@@ -9,9 +9,5 @@ type Props = {
 export default async function FoldersPage({ searchParams }: Props) {
     const folders = await api.folders.getAllFolders.query({ query: searchParams.query ?? "" });
 
-    return (
-        <FoldersProvider folders={folders}>
-            <FoldersList />
-        </FoldersProvider>
-    );
+    return <FoldersList folders={folders} />;
 }
