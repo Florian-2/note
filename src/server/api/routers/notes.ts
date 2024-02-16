@@ -1,5 +1,10 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { createNoteSchema, noteIdSchema } from "@/shared/validators/note";
+import {
+    createNoteSchema,
+    noteIdSchema,
+    updateNameNote,
+    updateNote,
+} from "@/shared/validators/note";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { TRPCError } from "@trpc/server";
 
@@ -27,11 +32,14 @@ export const noteRouter = createTRPCRouter({
         }
     }),
 
+    // Créer une note (vérifier qu'elle n'est pas créer a partir d'un dossier supprimer)
+
     getNoteById: protectedProcedure.input(noteIdSchema).query(({ ctx, input }) => {
         const userId = ctx.session.user.id;
 
         return ctx.db.note.findFirst({
             where: { createdBy: { id: userId }, id: input.noteId },
+            include: { folder: { select: { name: true } } },
         });
     }),
 
@@ -43,5 +51,21 @@ export const noteRouter = createTRPCRouter({
         });
     }),
 
-    // Créer une note (vérifier qu'elle n'ets pas créer a partir d'un dossier supprimer)
+    updateNote: protectedProcedure.input(updateNote).mutation(({ ctx, input }) => {
+        const userId = ctx.session.user.id;
+
+        return ctx.db.note.update({
+            where: { createdBy: { id: userId }, id: input.noteId },
+            data: { content: input.content },
+        });
+    }),
+
+    updateNameNote: protectedProcedure.input(updateNameNote).mutation(({ ctx, input }) => {
+        const userId = ctx.session.user.id;
+
+        return ctx.db.note.update({
+            where: { createdBy: { id: userId }, id: input.noteId },
+            data: { name: input.name },
+        });
+    }),
 });

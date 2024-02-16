@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useDeletesAllArchivedFolders } from "@/hooks/services/folders";
-import { Loader2, Trash } from "lucide-react";
+import { Loader, Trash } from "lucide-react";
 import { useState } from "react";
 
 const TITLE = "Vider la corbeille";
@@ -27,7 +27,7 @@ export function DeletesAllFolder() {
                     disabled={isClicked}
                 >
                     {isLoading ? (
-                        <Loader2 size={22} className="animate-spin" />
+                        <Loader size={22} className="animate-spin" />
                     ) : (
                         <Trash
                             size={22}

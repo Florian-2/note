@@ -3,6 +3,7 @@
 import * as React from "react";
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 import { Check, ChevronRight, Circle } from "lucide-react";
+import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
@@ -71,22 +72,41 @@ const ContextMenuContent = React.forwardRef<
 ));
 ContextMenuContent.displayName = ContextMenuPrimitive.Content.displayName;
 
+const contextMenuItemVariants = cva(
+    "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors duration-150 focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+    {
+        variants: {
+            variant: {
+                default: "hover:bg-accent hover:text-accent-foreground",
+                destructive:
+                    "justify-between text-destructive focus:bg-destructive/10 focus:text-destructive dark:text-red-500 dark:focus:bg-red-500/10 dark:focus:text-red-500",
+            },
+        },
+        defaultVariants: {
+            variant: "default",
+        },
+    },
+);
+
+export interface ContextMenuItemProps
+    extends React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Item>,
+        VariantProps<typeof contextMenuItemVariants> {
+    inset?: boolean;
+}
+
 const ContextMenuItem = React.forwardRef<
     React.ElementRef<typeof ContextMenuPrimitive.Item>,
-    React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Item> & {
-        inset?: boolean;
-    }
->(({ className, inset, ...props }, ref) => (
-    <ContextMenuPrimitive.Item
-        ref={ref}
-        className={cn(
-            "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors duration-150 focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-            inset && "pl-8",
-            className,
-        )}
-        {...props}
-    />
-));
+    ContextMenuItemProps
+>(({ className, inset, variant, ...props }, ref) => {
+    return (
+        <ContextMenuPrimitive.Item
+            ref={ref}
+            className={cn(contextMenuItemVariants({ variant, className }), inset && "pl-8")}
+            {...props}
+        />
+    );
+});
+
 ContextMenuItem.displayName = ContextMenuPrimitive.Item.displayName;
 
 const ContextMenuCheckboxItem = React.forwardRef<

@@ -1,4 +1,4 @@
-import { Notes } from "@/components/editor/editor-layout";
+import { NotesLayout } from "./_components/notes-layout";
 import { api } from "@/trpc/server";
 import { redirect } from "next/navigation";
 import { type ReactNode } from "react";
@@ -8,7 +8,7 @@ type Props = {
     children: ReactNode;
 };
 
-export default async function FolderPage({ children, params }: Props) {
+export default async function Layout({ children, params }: Props) {
     const folder = await api.folders.getFolderById.query({ id: params.folderId });
 
     if (!folder) {
@@ -17,7 +17,7 @@ export default async function FolderPage({ children, params }: Props) {
 
     return (
         <section className="h-full pt-14">
-            <Notes notes={folder.notes}>{children}</Notes>
+            <NotesLayout notes={folder.notes}>{children}</NotesLayout>
         </section>
     );
 }

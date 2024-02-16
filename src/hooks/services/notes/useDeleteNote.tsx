@@ -13,7 +13,7 @@ export function useDeleteNote() {
         onError() {
             toast({
                 variant: "destructive",
-                description: "La suppression des dossiers a échoué !",
+                description: "La suppression du fichier a échoué !",
             });
         },
     });

@@ -1,7 +1,7 @@
 "use client";
 
 import { type MouseEvent } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 import { AlertDialogAction } from "@/components/ui/alert-dialog";
 import { useRestoreFolder } from "@/hooks/services/folders";
 
@@ -20,7 +20,7 @@ export function RestoreFolderAction({ folderId }: Props) {
     return (
         <AlertDialogAction onClick={handleSelect} disabled={isLoading} className="gap-2">
             Restaurer
-            {isLoading && <Loader2 width={16} className="animate-spin" />}
+            {isLoading && <Loader width={16} className="animate-spin" />}
         </AlertDialogAction>
     );
 }

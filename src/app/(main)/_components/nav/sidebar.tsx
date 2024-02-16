@@ -18,8 +18,6 @@ export default function Sidebar({ className }: SidebarProps) {
     const { isOpen, toggle } = useSidebar();
     const [swith, setSwitch] = useState(false);
 
-    console.log("render <Sidebar/>");
-
     const handleToggle = () => {
         setSwitch(true);
         toggle();

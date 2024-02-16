@@ -59,4 +59,8 @@
 		@apply bg-background text-foreground;
 		height: 100vh;
 	}
+
+	.editor {
+		background-color: var(--background) !important;
+	}
 }

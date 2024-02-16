@@ -1,6 +1,5 @@
 import { api } from "@/trpc/server";
 import { FoldersList } from "./_components/folders-list";
-// import { SearchFolder } from "./_components/search-folder";
 
 type Props = {
     searchParams: { query?: string };

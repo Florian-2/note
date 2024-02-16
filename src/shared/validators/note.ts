@@ -10,3 +10,8 @@ export const createNoteSchema = z.object({
     folderId: z.string().min(20),
 });
 export type CreateNoteType = z.infer<typeof createNoteSchema>;
+
+export const updateNote = noteIdSchema.merge(z.object({ content: z.string().min(1) }));
+
+export const updateNameNote = noteIdSchema.merge(z.object({ name: z.string().min(1) }));
+export type UpdateNameNoteType = z.infer<typeof updateNameNote>;

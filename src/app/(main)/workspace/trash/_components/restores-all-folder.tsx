@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useRestoresAllArchivedFolders } from "@/hooks/services/folders";
-import { ArchiveRestore, Loader2 } from "lucide-react";
+import { ArchiveRestore, Loader } from "lucide-react";
 import { useState } from "react";
 
 export function RestoresAllFolder() {
@@ -22,7 +22,7 @@ export function RestoresAllFolder() {
             <TooltipTrigger asChild>
                 <Button variant={"secondary"} onClick={handleClick} disabled={isClicked}>
                     {isLoading ? (
-                        <Loader2 size={22} className="animate-spin" />
+                        <Loader size={22} className="animate-spin" />
                     ) : (
                         <ArchiveRestore size={22} />
                     )}

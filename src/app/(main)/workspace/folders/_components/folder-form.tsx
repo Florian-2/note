@@ -13,7 +13,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 import { useEffect } from "react";
 import { useCreateFolder } from "@/hooks/services/folders";
 
@@ -61,7 +61,7 @@ export function FolderForm({ onClose }: Props) {
                 <p className="text-sm text-destructive">{formState.errors.root?.message}</p>
 
                 <Button type="submit" disabled={isLoading} className="w-full gap-3 text-base">
-                    {isLoading && <Loader2 className="animate-spin" />}
+                    {isLoading && <Loader className="animate-spin" />}
                     Enregistrer
                 </Button>
             </form>
