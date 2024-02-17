@@ -20,7 +20,7 @@ export function MobileSidebar() {
 
             <SheetContent side="left" className="w-72">
                 <div className="pt-16">
-                    <SideNav items={navItems} setOpen={setOpen} />
+                    <SideNav isOpen={false} items={navItems} setOpen={setOpen} />
                 </div>
             </SheetContent>
         </Sheet>

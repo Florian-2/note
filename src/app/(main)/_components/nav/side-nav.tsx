@@ -33,7 +33,7 @@ export function SideNav({ items, isOpen, setOpen, className }: SideNavProps) {
             {items.map((item) => (
                 <Link
                     key={item.name}
-                    href={item.href}
+                    href={{ pathname: item.href }}
                     onClick={() => {
                         if (setOpen) setOpen(false);
                     }}

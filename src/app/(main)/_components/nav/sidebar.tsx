@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { useSidebar } from "@/hooks/useSidebar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
