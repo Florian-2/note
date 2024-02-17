@@ -7,7 +7,6 @@ import "@blocknote/core/style.css";
 import { type Note } from "@prisma/client";
 import { useUpdateNote } from "@/hooks/services/notes/useUpdateNote";
 import { Loader } from "lucide-react";
-import { useEffect } from "react";
 // import { useDebounce } from "@/hooks/useDebounce";
 
 type Props = {

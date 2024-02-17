@@ -22,7 +22,7 @@ export default function Sidebar({ open, className }: SidebarProps) {
         const open = !isOpen;
         setSwitch(true);
         setIsOpen(open);
-        document.cookie = `sidebar_is_open=${open};`;
+        document.cookie = `sidebar_is_open=${open}; path=/; samesite=lax;`;
         setTimeout(() => setSwitch(false), 200);
     };
 
