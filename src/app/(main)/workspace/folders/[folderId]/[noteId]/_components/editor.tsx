@@ -8,6 +8,7 @@ import { type Note } from "@prisma/client";
 import { useUpdateNote } from "@/hooks/services/notes/useUpdateNote";
 import { Loader } from "lucide-react";
 import { useEffect } from "react";
+// import { useDebounce } from "@/hooks/useDebounce";
 
 type Props = {
     note: Note;
@@ -16,7 +17,7 @@ type Props = {
 export default function Editor({ note }: Props) {
     const { mutate, isLoading } = useUpdateNote();
 
-    useEffect(() => console.log("render"));
+    console.log("Rendu <Editor/>");
 
     const initialContent = note.content ? (JSON.parse(note.content) as PartialBlock[]) : undefined;
 

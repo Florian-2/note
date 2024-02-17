@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/hooks/useSidebar";
@@ -11,16 +11,20 @@ import { navItems } from "@/constants/nav";
 import { SideNav } from "./side-nav";
 
 interface SidebarProps {
+    open: boolean | undefined;
     className?: string;
 }
 
-export default function Sidebar({ className }: SidebarProps) {
-    const { isOpen, toggle } = useSidebar();
+export default function Sidebar({ open, className }: SidebarProps) {
+    const [isOpen, setIsOpen] = useState(open ?? true);
+
     const [swith, setSwitch] = useState(false);
 
     const handleToggle = () => {
+        const open = !isOpen;
         setSwitch(true);
-        toggle();
+        setIsOpen(open);
+        document.cookie = `sidebar_is_open=${open};`;
         setTimeout(() => setSwitch(false), 200);
     };
 
@@ -38,6 +42,7 @@ export default function Sidebar({ className }: SidebarProps) {
                     <div className="px-3 py-2">
                         <div className="mt-3 space-y-1">
                             <SideNav
+                                isOpen={isOpen}
                                 className="text-background opacity-0 transition-all duration-300 group-hover:z-50 group-hover:ml-4 group-hover:rounded group-hover:bg-foreground group-hover:p-2 group-hover:opacity-100"
                                 items={navItems}
                             />

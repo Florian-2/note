@@ -4,19 +4,18 @@ import Link from "next/link";
 import { type NavItem } from "@/shared/interfaces";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { useSidebar } from "@/hooks/useSidebar";
 import { buttonVariants } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
 interface SideNavProps {
+    isOpen: boolean;
     items: NavItem[];
     setOpen?: (open: boolean) => void;
     className?: string;
 }
 
-export function SideNav({ items, setOpen, className }: SideNavProps) {
+export function SideNav({ items, isOpen, setOpen, className }: SideNavProps) {
     const path = usePathname();
-    const { isOpen } = useSidebar();
     const [openItem, setOpenItem] = useState("");
     const [lastOpenItem, setLastOpenItem] = useState("");
 
@@ -46,12 +45,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
                 >
                     <div className="flex items-center gap-4">
                         <item.icon className={"h-5 w-5"} />
-                        <span
-                            className={cn(
-                                "text-base duration-200",
-                                !isOpen && className,
-                            )}
-                        >
+                        <span className={cn("text-base duration-200", !isOpen && className)}>
                             {item.name}
                         </span>
                     </div>

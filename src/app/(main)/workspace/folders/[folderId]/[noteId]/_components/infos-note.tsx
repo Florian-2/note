@@ -3,7 +3,6 @@ import { EditNameNote } from "./edit-name-note";
 import { Separator } from "@/components/ui/separator";
 import { CalendarDays, Folder } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { getDateRelative } from "@/lib/utils";
 
 type Props = {
     note: Note;
@@ -15,8 +14,13 @@ export function InfosNote({ note, folderName }: Props) {
         dateStyle: "long",
     });
 
+    const timeFormat = Intl.DateTimeFormat("fr-FR", {
+        dateStyle: "long",
+        timeStyle: "short",
+    });
+
     return (
-        <div className="space-y-8 ">
+        <div className="space-y-8">
             <EditNameNote note={note} />
 
             <div className="space-y-4 text-foreground/75">
@@ -37,7 +41,7 @@ export function InfosNote({ note, folderName }: Props) {
                             </TooltipContent>
                         </Tooltip>
 
-                        <div className="h-1 w-1 rounded-full bg-foreground"></div>
+                        <div className="h-1 w-1 rounded-full bg-foreground/80"></div>
 
                         <Tooltip delayDuration={0}>
                             <TooltipTrigger asChild>
@@ -48,8 +52,7 @@ export function InfosNote({ note, folderName }: Props) {
 
                             <TooltipContent side="bottom">
                                 <span>
-                                    Dernière modification -{" "}
-                                    {getDateRelative(note.createdAt, note.updatedAt)}
+                                    Dernière modification - {timeFormat.format(note.updatedAt)}
                                 </span>
                             </TooltipContent>
                         </Tooltip>
