@@ -109,6 +109,19 @@ export const folderRouter = createTRPCRouter({
         });
     }),
 
+    getAllFolderLight: protectedProcedure.query(({ ctx }) => {
+        const userId = ctx.session.user.id;
+
+        return ctx.db.folder.findMany({
+            where: {
+                createdBy: { id: userId },
+                isArchived: false,
+            },
+            select: { id: true, name: true },
+            orderBy: { name: "asc" },
+        });
+    }),
+
     favoriteFolder: protectedProcedure
         .input(favoriteFolderSchema)
         .mutation(async ({ ctx, input }) => {

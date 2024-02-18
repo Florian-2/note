@@ -17,16 +17,20 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { ContextMenuCopy } from "@/components/ui/context-menu-item";
 import { useDeleteNote } from "@/hooks/services/notes";
-import { Loader } from "lucide-react";
+import { useState } from "react";
+import { MoveNoteForm } from "./form-move";
+import { DeleteNote } from "./delete-note";
 
 type Props = {
     note: Note;
 };
 
+type Dialog = "delete" | "move" | null;
+
 export function NoteCard({ note }: Props) {
+    const [dialog, setDialog] = useState<Dialog>(null);
     const params = useParams<NoteParams>();
     const { mutate, isLoading } = useDeleteNote();
 
@@ -61,31 +65,51 @@ export function NoteCard({ note }: Props) {
                         <ContextMenuItem>Favori</ContextMenuItem>
 
                         <DialogTrigger asChild>
-                            <ContextMenuItem variant={"destructive"}>Supprimer</ContextMenuItem>
+                            <ContextMenuItem onClick={() => setDialog("move")}>
+                                Déplacer
+                            </ContextMenuItem>
+                        </DialogTrigger>
+
+                        <DialogTrigger asChild>
+                            <ContextMenuItem
+                                variant={"destructive"}
+                                onClick={() => setDialog("delete")}
+                            >
+                                Supprimer
+                            </ContextMenuItem>
                         </DialogTrigger>
                     </ContextMenuContent>
                 </ContextMenu>
 
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Supprimer le fichier</DialogTitle>
-                        <DialogDescription>
-                            Etes-vous sûr de vouloir supprimer ce fichier de façon permanente ?
-                        </DialogDescription>
-                    </DialogHeader>
+                {dialog === "move" ? (
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Déplacer le fichier</DialogTitle>
+                        </DialogHeader>
 
-                    <Button
-                        variant={"destructive"}
-                        className="mt-2 gap-2 text-base font-semibold"
-                        disabled={isLoading}
-                        onClick={() => {
-                            mutate({ noteId: note.id });
-                        }}
-                    >
-                        <span>Supprimer</span>
-                        {isLoading && <Loader size={16} className="animate-spin" />}
-                    </Button>
-                </DialogContent>
+                        <MoveNoteForm
+                            folderId={params.folderId}
+                            noteId={note.id}
+                            onCloseModal={() => setDialog(null)}
+                        />
+                    </DialogContent>
+                ) : null}
+
+                {dialog && dialog === "delete" ? (
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Supprimer le fichier</DialogTitle>
+                            <DialogDescription>
+                                Etes-vous sûr de vouloir supprimer ce fichier de façon permanente ?
+                            </DialogDescription>
+                        </DialogHeader>
+
+                        <DeleteNote
+                            disabled={isLoading}
+                            onClick={() => mutate({ noteId: note.id })}
+                        />
+                    </DialogContent>
+                ) : null}
             </Dialog>
         </>
     );
