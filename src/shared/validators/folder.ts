@@ -21,3 +21,6 @@ export const folderIdSchema = z.object({
 });
 
 export const favoriteFolderSchema = folderIdSchema.merge(z.object({ isFavorite: z.boolean() }));
+
+export const renameFolderSchema = folderIdSchema.merge(createFolderSchema);
+export type RenameFolderType = z.infer<typeof renameFolderSchema>;

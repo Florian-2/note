@@ -5,6 +5,7 @@ import {
     createFolderSchema,
     favoriteFolderSchema,
     folderIdSchema,
+    renameFolderSchema,
     searchFolderSchema,
 } from "@/shared/validators/folder";
 import { z } from "zod";
@@ -118,6 +119,15 @@ export const folderRouter = createTRPCRouter({
                 data: { isFavorite: input.isFavorite },
             });
         }),
+
+    renameFolder: protectedProcedure.input(renameFolderSchema).mutation(async ({ ctx, input }) => {
+        const userId = ctx.session.user.id;
+
+        return ctx.db.folder.update({
+            where: { createdBy: { id: userId }, id: input.folderId },
+            data: { name: input.name },
+        });
+    }),
 
     archiveFolder: protectedProcedure.input(folderIdSchema).mutation(async ({ ctx, input }) => {
         const userId = ctx.session.user.id;
