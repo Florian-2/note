@@ -2,17 +2,17 @@ import { toast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 
-export function useFavoriteFolder() {
+export function useFavoriteNote() {
     const router = useRouter();
 
-    return api.folders.favoriteFolder.useMutation({
+    return api.notes.favoriteNote.useMutation({
         onSuccess() {
             router.refresh();
         },
         onError() {
             toast({
                 variant: "destructive",
-                description: "Le dossier n'a pas pu être ajouté aux favoris",
+                description: "Le fichier n'a pas pu être ajouté aux favoris",
             });
         },
     });

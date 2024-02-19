@@ -25,6 +25,7 @@ import {
     CommandInput,
     CommandItem,
 } from "@/components/ui/command";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type Props = {
     folderId: string;
@@ -66,7 +67,7 @@ export function MoveNoteForm({ folderId, noteId, onCloseModal }: Props) {
                     name="folderId"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Dossiers</FormLabel>
+                            <FormLabel>Déplacer vers : </FormLabel>
 
                             <Popover>
                                 <PopoverTrigger asChild>
@@ -93,29 +94,31 @@ export function MoveNoteForm({ folderId, noteId, onCloseModal }: Props) {
                                 <PopoverContent className="p-0">
                                     <Command>
                                         <CommandInput placeholder="Rechercher un dossier" />
-                                        <CommandEmpty>Aucun résultat...</CommandEmpty>
 
-                                        <CommandGroup>
-                                            {folders?.map((folder) => (
-                                                <CommandItem
-                                                    key={folder.id}
-                                                    value={folder.name}
-                                                    onSelect={() =>
-                                                        form.setValue("folderId", folder.id)
-                                                    }
-                                                >
-                                                    {folder.name}
-                                                    <Check
-                                                        className={cn(
-                                                            "ml-auto h-4 w-4",
-                                                            folder.id === field.value
-                                                                ? "opacity-100"
-                                                                : "opacity-0",
-                                                        )}
-                                                    />
-                                                </CommandItem>
-                                            ))}
-                                        </CommandGroup>
+                                        <ScrollArea className="h-36">
+                                            <CommandEmpty>Aucun résultat...</CommandEmpty>
+                                            <CommandGroup>
+                                                {folders?.map((folder) => (
+                                                    <CommandItem
+                                                        key={folder.id}
+                                                        value={folder.name}
+                                                        onSelect={() =>
+                                                            form.setValue("folderId", folder.id)
+                                                        }
+                                                    >
+                                                        {folder.name}
+                                                        <Check
+                                                            className={cn(
+                                                                "ml-auto h-4 w-4",
+                                                                folder.id === field.value
+                                                                    ? "opacity-100"
+                                                                    : "opacity-0",
+                                                            )}
+                                                        />
+                                                    </CommandItem>
+                                                ))}
+                                            </CommandGroup>
+                                        </ScrollArea>
                                     </Command>
                                 </PopoverContent>
                             </Popover>

@@ -21,3 +21,5 @@ export type UpdateNameNoteType = z.infer<typeof updateNameNote>;
 
 export const moveNoteSchema = noteIdSchema.merge(folderIdSchema);
 export type MoveNoteType = z.infer<typeof moveNoteSchema>;
+
+export const favoriteNoteSchema = noteIdSchema.merge(z.object({ isFavorite: z.boolean() }));

@@ -1,6 +1,7 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
     createNoteSchema,
+    favoriteNoteSchema,
     moveNoteSchema,
     noteIdSchema,
     updateNameNote,
@@ -76,6 +77,15 @@ export const noteRouter = createTRPCRouter({
         return ctx.db.note.update({
             where: { createdBy: { id: userId }, id: input.noteId },
             data: { name: input.name },
+        });
+    }),
+
+    favoriteNote: protectedProcedure.input(favoriteNoteSchema).mutation(async ({ ctx, input }) => {
+        const userId = ctx.session.user.id;
+
+        return ctx.db.note.update({
+            where: { createdBy: { id: userId }, id: input.noteId },
+            data: { isFavorite: input.isFavorite },
         });
     }),
 });

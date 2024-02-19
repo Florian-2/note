@@ -11,7 +11,11 @@ export function ContextMenuFavori({
     children,
 }: PropsWithChildren<ContextAction>) {
     return (
-        <ContextMenuItem onSelect={onSelect} disabled={disabled} className="justify-between">
+        <ContextMenuItem
+            onSelect={onSelect}
+            disabled={disabled}
+            className="justify-between focus:bg-orange-400/10 focus:text-orange-400 dark:focus:bg-orange-400/10 dark:focus:text-orange-400"
+        >
             {children}
             {disabled && <Loader width={16} className="animate-spin" />}
         </ContextMenuItem>

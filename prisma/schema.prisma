@@ -8,13 +8,14 @@ datasource db {
 }
 
 model Note {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  name       String   @unique
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  isFavorite Boolean  @default(false)
 
-  createdBy   User   @relation(fields: [createdById], references: [id]) // Une note est créée par UN utilisateur
+  createdBy   User   @relation(fields: [createdById], references: [id])
   createdById String
 
   folder      Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
