@@ -22,7 +22,6 @@ import { useDeleteNote, useFavoriteNote } from "@/hooks/services/notes";
 import { useState } from "react";
 import { MoveNoteForm } from "./form-move";
 import { DeleteNote } from "./delete-note";
-import { Loader } from "lucide-react";
 import { ContextMenuFavori } from "@/components/ui/context-menu-item/favorite";
 
 type Props = {

@@ -5,7 +5,7 @@ import type { BlockNoteEditor, PartialBlock } from "@blocknote/core";
 import { BlockNoteView, useBlockNote } from "@blocknote/react";
 import "@blocknote/core/style.css";
 import { type Note } from "@prisma/client";
-import { useUpdateNote } from "@/hooks/services/notes/useUpdateNote";
+import { useUpdateNote } from "@/hooks/services/notes";
 import { Loader } from "lucide-react";
 // import { useDebounce } from "@/hooks/useDebounce";
 

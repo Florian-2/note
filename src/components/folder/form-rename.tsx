@@ -15,7 +15,7 @@ import { Loader } from "lucide-react";
 import type { Folder } from "@prisma/client";
 import { Input } from "@/components/ui/input";
 import { type RenameFolderType, renameFolderSchema } from "@/shared/validators/folder";
-import { useRenameFolder } from "@/hooks/services/folders/useRenameFolder";
+import { useRenameFolder } from "@/hooks/services/folders";
 import { useEffect } from "react";
 
 type Props = {

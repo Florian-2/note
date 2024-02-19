@@ -1,5 +1,3 @@
-"use client";
-
 import { toast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";

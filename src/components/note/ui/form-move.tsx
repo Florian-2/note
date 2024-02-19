@@ -16,7 +16,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Check, ChevronUp, Loader } from "lucide-react";
-import { useMoveNote } from "@/hooks/services/notes/useMoveNote";
+import { useMoveNote } from "@/hooks/services/notes";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
     Command,

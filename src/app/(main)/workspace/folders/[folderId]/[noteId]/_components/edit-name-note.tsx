@@ -22,7 +22,7 @@ import { Edit, Loader } from "lucide-react";
 import { type UpdateNameNoteType, updateNameNote } from "@/shared/validators/note";
 import type { NoteParams } from "@/shared/types";
 import { useParams } from "next/navigation";
-import { useUpdateNameNote } from "@/hooks/services/notes/useUpdateNameNote";
+import { useUpdateNameNote } from "@/hooks/services/notes";
 import type { Note } from "@prisma/client";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
