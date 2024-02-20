@@ -3,20 +3,20 @@
 import { AnimatePresence } from "framer-motion";
 import { ContextFolderCard } from "@/components/folder/ui/context-folder-card";
 import { CreateFolder } from "./create-folder";
-import { useFolders } from "@/context/folders";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { SelectOrderBy } from "./ui/select-sort";
+import { SelectOrderBy } from "@/components/ui/select-sort";
 import { folderCardVariant } from "@/animations/folder";
 import { SearchFolder } from "./search-folder";
 import { FolderGrid } from "@/components/folder/ui/folder-grid";
 import { type FolderWithCount } from "@/shared/types";
+import { useSortBy } from "@/hooks/useSortBy";
 
 type Props = {
     folders: FolderWithCount[];
 };
 
 export function FoldersList({ folders }: Props) {
-    const { folders: foldersList, orderBy, setOrderBy } = useFolders(folders);
+    const { data: foldersList, orderBy, setOrderBy } = useSortBy(folders);
 
     return (
         <section className="grid h-full grid-rows-layout gap-10 px-3 pt-20 md:px-6">

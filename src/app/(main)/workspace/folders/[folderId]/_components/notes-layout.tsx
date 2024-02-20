@@ -2,9 +2,9 @@
 
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import type { Note } from "@prisma/client";
-import { NoteCard } from "@/components/note/ui/note-card";
 import { type ReactNode } from "react";
 import { CreateNoteModal } from "@/app/(main)/workspace/folders/[folderId]/[noteId]/_components/create-note-modal";
+import { NotesListe } from "./notes-list";
 
 type Props = {
     notes: Note[];
@@ -19,13 +19,7 @@ export function NotesLayout({ notes, children }: Props) {
             <ResizablePanel defaultSize={25} minSize={20} maxSize={30} className="space-y-6 p-3">
                 <CreateNoteModal />
 
-                <ul className="flex min-h-full flex-col gap-3">
-                    {notes.map((note) => (
-                        <li key={note.id}>
-                            <NoteCard note={note} />
-                        </li>
-                    ))}
-                </ul>
+                <NotesListe notes={notes} />
             </ResizablePanel>
 
             <ResizableHandle withHandle />

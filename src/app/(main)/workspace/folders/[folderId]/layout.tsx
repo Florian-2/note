@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default async function Layout({ children, params }: Props) {
-    const folder = await api.folders.getFolderById.query({ id: params.folderId });
+    const folder = await api.folders.getFolderById.query({ id: params.folderId }); // + query: params.query
 
     if (!folder) {
         return redirect("/workspace/folders");

@@ -18,4 +18,5 @@ export enum SortBy {
     NameDesc = "name.desc",
     DateAsc = "date.asc",
     DateDesc = "date.desc",
+    Favorite = "fav",
 }
